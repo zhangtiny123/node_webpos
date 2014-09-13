@@ -1,0 +1,32 @@
+.my_nav{
+    padding-left: 80px;
+    padding-right: 90px;
+}
+
+.my_panel_head{
+    padding-bottom: 20px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.my_panel_head_left{
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+tr,td{
+    text-align: center;
+}
+
+.my_panel_tail{
+    float: right;
+}
+
+.my_empty_message{
+    margin-top: 80px;
+    text-decoration-color: gray;
+    text-decoration-style: dashed;
+    text-align: center;
+    height: 50px;
+
+}
