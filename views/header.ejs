@@ -11,6 +11,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="stylesheets/bootstrap.css">
     <link rel="stylesheet" href="stylesheets/my_css.css">
+    <script src="/javascripts/jquery.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -30,13 +31,13 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li ><a href="/">主页</a></li>
-                <li><a href="/product_list">商品列表</a></li>
+                <li id="home_page"><a href="/">主页</a></li>
+                <li id="list_page"><a href="/product_list">商品列表</a></li>
 
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="cart_count">0</span>)</a></li>
+                <li id="cart"><a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span>购物车(<span id="cart_count">0</span>)</a></li>
 
             </ul>
         </div><!-- /.navbar-collapse -->
