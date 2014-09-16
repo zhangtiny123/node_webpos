@@ -26,7 +26,6 @@ module.exports = function(app){
                 product_list : products
             });
         });
-
     });
     app.get('/cart', function(req, res) {
         res.render('cart', {});
