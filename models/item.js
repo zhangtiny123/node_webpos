@@ -10,22 +10,24 @@ function Item(type, barcode, name, unit, price) {
 
 module.exports = Item;
 
-Item.find_by_barcode = function(barcode){
-    var items = Item.loadAllItems(null, function(err, products){
-        if(err) {
-            products = []
-        }
-        return products;
-    });
-    for (var i=0; i<items.length; i++) {
-        if (items[i].barcode == barcode) {
-            return items[i];
-        }
-    }
-    return null;
-};
+//Item.find_by_barcode = function(barcode){
+//    Item.loadAllItems(null, function(err, products){
+//        if(err) {
+//            products = []
+//        }
+//
+//    });
+//
+//    console.log("items:"+items);
+//    for (var i=0; i<items.length; i++) {
+//        if (items[i].barcode == barcode) {
+//            return items[i];
+//        }
+//    }
+//    return null;
+//};
 
-Item.loadAllItems = function( name, callback){
+Item.get_item = function( barcode, callback){
     mongodb.open(function (err, db) {
         if (err) {
             return callback(err);
@@ -37,8 +39,8 @@ Item.loadAllItems = function( name, callback){
                 return callback(err);
             }
             var query = {};
-            if (name) {
-                query.name = name;
+            if (barcode) {
+                query.barcode = barcode;
             }
             //根据 query 对象查询文章
             collection.find(query).sort({
@@ -75,7 +77,7 @@ Item.save = function() {
                 return callback(err);
             }
             //将文档插入 pos 集合
-            collection.insert(item, {
+            collection.save(item, {
                 safe: true
             }, function (err) {
                 mongodb.close();

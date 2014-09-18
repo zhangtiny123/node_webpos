@@ -3,7 +3,8 @@
  * GET home page.
  */
 
-var item = require('../models/Item.js');
+var item = require('../models/item.js');
+var Processor = require('../models/Processor.js')
 
 
 module.exports = function(app){
@@ -18,7 +19,7 @@ module.exports = function(app){
     });
 
     app.get('/product_list', function(req, res) {
-        item.loadAllItems(null, function(err, products){
+        item.get_item(null, function(err, products){
 
             if (err){
                 products = [];
@@ -32,20 +33,8 @@ module.exports = function(app){
     app.post('/add_to_cart', function(req, res) {
         var barcode = req.body.barcode;
         var type = req.body.type;
-        var items = req.session.cart_items;
-        console.log(items);
-        items.push(barcode);
-        console.log(items);
-        req.session.cart_items = items;
-        console.log(req.session.cart_items);
-        console.log(req.session);
 
-//        var cart_items = req.session.cart_items;
-//        console.log("cart_items_pre:"+cart_items);
-//        cart_items.push(barcode);
-//        console.log("cart_items_last:"+cart_items);
-//        req.session.cart_items = barcode;
-//        console.log(req.session.cart_items);
+        Processor.process_add_item(barcode);
 
         
     });

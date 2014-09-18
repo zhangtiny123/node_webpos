@@ -1,24 +1,29 @@
+var mongodb = require('./db.js');
+
 function Promotion(type, barcodes) {
     this.type = type;
     this.barcodes = barcodes || [];
 }
 
-Promotion.loadPromotions = function(err, callback) {
+module.exports = Promotion;
+
+Promotion.loadPromotion = function(type, barcode, callback) {
     mongodb.open(function (err, db) {
         if (err) {
             return callback(err);
         }
-        //读取 posts 集合
+        //读取 promotions 集合
         db.collection('promotions', function(err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);
             }
             var query = {};
-            if (name) {
-                query.name = name;
+            if (type) {
+                query.type = type;
+                query.barcode = barcode;
             }
-            //根据 query 对象查询文章
+            //根据 query 对象查询促销活动
             collection.find(query).sort({
                 time: -1
             }).toArray(function (err, docs) {
@@ -43,14 +48,14 @@ Promotion.save = function(callback) {
         if (err) {
             return callback(err);
         }
-        //读取 pos 集合
+        //读取 promotions 集合
         db.collection('promotions', function (err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);
             }
             //将文档插入 pos 集合
-            collection.insert(promotion, {
+            collection.save(promotion, {
                 safe: true
             }, function (err) {
                 mongodb.close();

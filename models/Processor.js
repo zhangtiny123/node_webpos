@@ -2,34 +2,49 @@
  * Created by tiny on 14-9-5.
  */
 //TODO: Please write code in this file.
-var printInventory = function (inputs) {
-    var list = [];
 
-    var i = 0;
-    while(i < inputs.length){
-        if (has_item_in_list(list, inputs[i])){
-            list[position_in_list(get_input_barcode(inputs[i]),list)].count_plus(get_input_item_number(inputs[i]));
-            list[position_in_list(get_input_barcode(inputs[i]),list)].calculate_total_price();
+var Counting = require("./Counting.js");
+var Item = require("./item.js");
+
+function Processor() {
+
+}
+
+module.exports = Processor;
+
+Processor.process_add_item = function(input_barcode) {
+    var counting = null;
+    Counting.get_cart_info(input_barcode,function(err, cart_item) {
+        if(err) {
+            console.log(err);
         }
-        else {
-            var barcode = get_input_barcode(inputs[i]);
-            var item = Item.find_by_barcode(barcode);
-            var counting = new Counting(item.type, item.name, item.barcode, item.price, item.unit);
-            counting.count_plus(get_input_item_number(inputs[i]));
+
+        //数据库中存在相同的物品
+        if (cart_item.length != 0){
+            counting = new Counting(cart_item.type, cart_item.name, cart_item.barcode, cart_item.price, cart_item.unit);
+            counting.count_plus(1);
             counting.calculate_total_price();
-            list.push(counting);
         }
-        i += 1;
-    }
-    return _.sortBy(list, function(list_item) {
-        return list_item.price;
-    });
 
+        //数据库中没有相同的物品
+        else {
+            Item.get_item(input_barcode, function(err, product) {
+                var counting = new Counting(product.type, product.name, product.barcode, product.price, product.unit);
+                counting.count_plus(1);
+                counting.calculate_total_price();
+            })
+        }
+
+        counting.save(function(err) {
+            if (err) {
+                console.log(err);
+            }
+        })
+    });
 
 };
 
-
-var current_time = function(){
+Processor.current_time = function(){
     var dateDigitToString = function (num) {
         return num < 10 ? '0' + num : num;
     };
@@ -45,26 +60,7 @@ var current_time = function(){
     return formattedDateString;
 };
 
-
-var has_item_in_list = function(list, inputs){
-    for(var j=0; j<list.length; j++){
-        if (get_input_barcode(inputs) == list[j].barcode){
-            return true;
-        }
-    }
-    return false;
-};
-
-var position_in_list = function(barcode, list){
-    for (var i=0; i<list.length; i++){
-        if (list[i].barcode == barcode){
-            return i;
-        }
-    }
-    return null;
-};
-
-var get_pay_list = function(list){
+Processor.get_pay_list = function(list){
     var pay_list = '';
     for (var k=0; k<list.length; k++){
         pay_list +=
@@ -74,7 +70,7 @@ var get_pay_list = function(list){
     return pay_list;
 };
 
-var get_free_list = function(list){
+Processor.get_free_list = function(list){
     var free_list = '';
     for (var k1=0; k1<list.length; k1++){
         if(list[k1].promotion_number != 0){
@@ -85,7 +81,7 @@ var get_free_list = function(list){
     return free_list;
 };
 
-var calculate_total_payments = function(counting_list) {
+Processor.calculate_total_payments = function(counting_list) {
     var total_payments = 0;
     for(var i=0; i<counting_list.length; i++){
         total_payments += counting_list[i].total_price;
@@ -93,7 +89,7 @@ var calculate_total_payments = function(counting_list) {
     return total_payments.toFixed(2);
 };
 
-var calculate_saved_money = function(counting_list) {
+Processor.calculate_saved_money = function(counting_list) {
     var saved_money = 0;
     for(var i=0; i<counting_list.length; i++){
         if(counting_list[i].promotion_number != 0){
@@ -101,12 +97,4 @@ var calculate_saved_money = function(counting_list) {
         }
     }
     return saved_money.toFixed(2);
-}
-
-var get_input_barcode = function(input_item) {
-    return input_item.length == 10 ? input_item : input_item.slice(0,10);
-};
-
-var get_input_item_number = function(input_item) {
-    return input_item.length == 10 ? 1 : parseInt(input_item.slice(11,input_item.length));
 };
