@@ -22,13 +22,16 @@ Counting.prototype.count_plus = function(plus_number){
     this.count += plus_number;
 };
 
-Counting.prototype.calculate_total_price = function(){
+Counting.prototype.calculate_total_price = function(callback){
     var counting = this;
+
     counting.total_price = 0;
     counting.promotion_number = 0;
     Promotion.loadPromotion("BUY_TWO_GET_ONE_FREE", counting.barcode, function(err, promotion){
-        if(promotion.length != 0) {
-            var left_count = count;
+        console.log("loaded promotion length:"+ promotion.length);
+        if(promotion.length == 1) {
+            console.log("counting count:"+counting.count);
+            var left_count = counting.count;
             while(left_count-3 >= 0){
                 counting.total_price += counting.price*2;
                 left_count -= 3;
@@ -39,10 +42,9 @@ Counting.prototype.calculate_total_price = function(){
         else {
             counting.total_price += counting.price*counting.count;
         }
+        console.log("counting info total_price:"+counting.total_price);
+       callback(counting);
     });
-
-
-
 };
 
 Counting.prototype.is_promoted = function(){
@@ -99,12 +101,34 @@ Counting.prototype.save = function(callback) {
     };
 
     //打开数据库
-    mongodb.open(function (err, db) {
-        if (err) {
-            return callback(err);
-        }
-        //读取 cart_items 集合
-        db.collection('cart_items', function (err, collection) {
+    if(!mongodb.openCalled){
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 cart_items 集合
+            db.collection('cart_items', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                    //将文档插入 cart_items 集合
+                collection.save(item, {
+                    safe: true
+                }, function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null);//返回 err 为 null
+                });
+            });
+        });
+
+    }
+    else{
+        mongodb.collection('cart_items', function (err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);
@@ -120,6 +144,56 @@ Counting.prototype.save = function(callback) {
                 callback(null);//返回 err 为 null
             });
         });
-    });
+    }
 };
+
+Counting.prototype.update_item = function(item, callback) {
+    if(!mongodb.openCalled){
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 cart_items 集合
+            db.collection('cart_items', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                var query = {};
+                query.barcode = item.barcode;
+
+                //将文档插入 cart_items 集合
+                collection.update(query, item, function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null);//返回 err 为 null
+                });
+            });
+        });
+
+    }
+    else{
+        mongodb.collection('cart_items', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            var query = {};
+            query.barcode = item.barcode;
+
+            //将文档插入 cart_items 集合
+            collection.update(query, item, function (err) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err
+                }
+                callback(null);//返回 err 为 null
+            });
+        });
+    }
+}
 

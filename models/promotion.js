@@ -1,8 +1,8 @@
 var mongodb = require('./db.js');
 
-function Promotion(type, barcodes) {
+function Promotion(type, barcode) {
     this.type = type;
-    this.barcodes = barcodes || [];
+    this.barcode = barcode;
 }
 
 module.exports = Promotion;
@@ -40,7 +40,7 @@ Promotion.loadPromotion = function(type, barcode, callback) {
 Promotion.save = function(callback) {
     var promotion = {
         type : this.type,
-        barcodes : this.barcodes
+        barcode : this.barcode
     };
 
     //打开数据库

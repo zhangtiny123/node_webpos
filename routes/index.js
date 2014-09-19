@@ -35,7 +35,7 @@ module.exports = function(app){
         var type = req.body.type;
 
         Processor.process_add_item(barcode);
-
+        
         
     });
 
