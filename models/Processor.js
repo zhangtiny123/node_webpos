@@ -12,12 +12,10 @@ function Processor() {
 
 module.exports = Processor;
 
-Processor.process_add_item = function(input_barcode) {
-    var counting ;
-    console.log("input_barcode:"+ input_barcode);
-    Counting.get_cart_info(input_barcode,function(err, cart_item) {
+Processor.process_add_item = function(input_barcode ,add_num, callback) {
+    var counting;
+    Counting.get_cart_info(input_barcode, function(err, cart_item) {
         if(err) {
-            console.log("get_cart_info has error!");
             console.log(err);
         }
 
@@ -27,46 +25,40 @@ Processor.process_add_item = function(input_barcode) {
                 cart_item[0].price, cart_item[0].unit);
             counting.count = cart_item[0].count;
             counting._id = new Object(cart_item[0]._id);
-            console.log("id of cart_item :"+cart_item[0]._id);
-            console.log("id of counting:"+counting._id);
-
-            console.log("type of cart_item id:"+typeof (cart_item[0]._id));
-            console.log("type of counting id:"+typeof (counting._id));
-
-
-            console.log("the read item built counting."+counting.name);
-            counting.count_plus(1);
+            counting.count_plus(add_num);
             counting.calculate_total_price(function(calculated_counting){
                 calculated_counting.update_item(calculated_counting, function(err) {
                     if (err) {
                         console.log("error:"+err);
-                        console.log("read item built counting save error!");
                     }
-                })
+                    Counting.get_cart_counting(function (count) {
+                        callback(count, calculated_counting);
+                    })
+                });
             });
         }
 
         //数据库中没有相同的商品
         else {
             Item.get_item(input_barcode, function(err, product) {
-                var counting = new Counting(product[0].type, product[0].name, product[0].barcode, product[0].price, product[0].unit);
+                var counting = new Counting(product[0].type, product[0].name, product[0].barcode,
+                    product[0].price, product[0].unit);
                 console.log("the fresh counting item:"+counting.name);
-                counting.count_plus(1);
+                counting.count_plus(add_num);
                 counting.calculate_total_price(function(calculated_counting){
                     calculated_counting.save(function(err) {
                         if (err) {
-                            console.log("fresh counting item save error!");
                             console.log(err);
                         }
-                    })
+                        Counting.get_cart_counting(function (count) {
+                            callback(count, calculated_counting);
+                        })
+                    });
                 });
 
             })
         }
     });
-
-
-
 };
 
 Processor.current_time = function(){

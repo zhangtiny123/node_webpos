@@ -47,25 +47,51 @@ Counting.prototype.calculate_total_price = function(callback){
     });
 };
 
-Counting.prototype.is_promoted = function(){
-    Promotion.loadPromotion("BUY_TWO_GET_ONE_FREE", function(err, promotion){
-
-    });
-    for(var i=0; i<promotions[0].barcodes.length; i++){
-        if (this.barcode == promotions[0].barcodes[i]){
-            return true;
+Counting.get_cart_counting = function(callback) {
+    Counting.get_cart_info(null, function(err, cart_items){
+        console.log("读出来的是啥！！！！！："+ cart_items);
+        var count = 0;
+        for (var i=0; i<cart_items.length; i++) {
+            count += cart_items[i].count;
         }
-    }
-    return false;
+        callback(count);
+    })
 };
 
 Counting.get_cart_info = function(barcode, callback) {
-    mongodb.open(function (err, db) {
-        if (err) {
-            return callback(err);
-        }
-        //读取 cart_items 集合
-        db.collection('cart_items', function(err, collection) {
+    if(!mongodb.openCalled){
+        console.log("数据库没有被打开************")
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 cart_items 集合
+            db.collection('cart_items', function(err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+                var query = {};
+                if (barcode) {
+                    query.barcode = barcode;
+                }
+                //根据 query 对象查询文章
+                collection.find(query).sort({
+                    time: -1
+                }).toArray(function (err, docs) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null, docs);//成功！以数组形式返回查询的结果
+                });
+            });
+        });
+    }
+    else {
+        console.log("数据库被打开了%%%%%%%%%%%%%%%%%%")
+        mongodb.collection('cart_items', function(err, collection) {
+            console.log("*************************");
             if (err) {
                 mongodb.close();
                 return callback(err);
@@ -85,7 +111,8 @@ Counting.get_cart_info = function(barcode, callback) {
                 callback(null, docs);//成功！以数组形式返回查询的结果
             });
         });
-    });
+    }
+
 };
 
 Counting.prototype.save = function(callback) {

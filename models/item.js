@@ -56,7 +56,7 @@ Item.get_item = function( barcode, callback){
     });
 };
 
-Item.save = function() {
+Item.save = function(callback) {
     var item = {
         type : this.type,
         name : this.name,
