@@ -49,12 +49,12 @@ Counting.prototype.calculate_total_price = function(callback){
 
 Counting.get_cart_counting = function(callback) {
     Counting.get_cart_info(null, function(err, cart_items){
-        console.log("读出来的是啥！！！！！："+ cart_items);
+
         var count = 0;
         for (var i=0; i<cart_items.length; i++) {
             count += cart_items[i].count;
         }
-        callback(count);
+        callback(count ,cart_items);
     })
 };
 
@@ -214,6 +214,51 @@ Counting.prototype.update_item = function(item, callback) {
 
             //将文档插入 cart_items 集合
             collection.update(query, item, function (err) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err
+                }
+                callback(null);//返回 err 为 null
+            });
+        });
+    }
+};
+
+Counting.clear_cart = function (callback) {
+    if(!mongodb.openCalled){
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 cart_items 集合
+            db.collection('cart_items', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+
+                //删除 cart_items 集合
+                collection.drop( function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null);//返回 err 为 null
+                });
+            });
+        });
+
+    }
+    else{
+        mongodb.collection('cart_items', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            //删除 cart_items 集合
+            collection.drop( function (err) {
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err

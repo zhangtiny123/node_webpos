@@ -15,7 +15,31 @@
             <td>小计</td>
             </thead>
             <tbody id="bought_list_body">
-
+            <% bought_list.forEach(function( item, index) {%>
+            <tr id="item_body" >
+                <td class="hidden"><%= item.barcode%></td>
+                <td >
+                    <%= item.type%>
+                </td>
+                <td >
+                    <%= item.name %>
+                </td>
+                <td >
+                    <%= item.price %>
+                </td>
+                <td >
+                    <%= item.unit %>
+                </td>
+                <td >
+                    <%= item.count %>
+                </td>
+                <% if(item.promotion_number) {%>
+                <td id="total_price"> <%= item.total_price %>元(原价: <%= item.price * item.count%>元)</td>
+                <% } else{%>
+                <td id="total_price"> <%= item.total_price %>元</td>
+                <% }%>
+            </tr>
+            <%})%>
             </tbody>
         </table>
     </div>
@@ -31,13 +55,26 @@
             <td>数量</td>
             </thead>
             <tbody id="promotion_body">
-
+            <% saved_list.forEach(function( item, index) {%>
+            <tr id="item_body" >
+                <td class="hidden"><%= item.barcode%></td>
+                <td >
+                    <%= item.type%>
+                </td>
+                <td >
+                    <%= item.name %>
+                </td>
+                <td >
+                    <%= item.promotion_number %>
+                </td>
+            </tr>
+            <%})%>
             </tbody>
         </table>
         <div class="my_panel_tail">
-            <p>总计：<span id="total_payments">0.00</span>元</p>
-            <p>节省：<span id="saved_money">0.00</span>元</p>
-            <p><a id="total_pay_button" class="btn btn-primary btn-lg" href="product_list.html">确认</a></p>
+            <p>总计：<span ><%= total_payments%></span>元</p>
+            <p>节省：<span ><%= saved_money%></span>元</p>
+            <p><a id="total_pay_button" class="btn btn-primary btn-lg" href="/product_list">确认</a></p>
         </div>
     </div>
 </div>

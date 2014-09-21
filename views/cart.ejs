@@ -15,9 +15,42 @@
             <td>小计</td>
             </thead>
             <tbody id="cart_item_body">
-
+            <% cart_items.forEach(function( item, index) {%>
+            <tr id="item_body" >
+                <td class="hidden"><%= item.barcode%></td>
+                <td >
+                    <%= item.type%>
+                </td>
+                <td >
+                    <%= item.name %>
+                </td>
+                <td >
+                    <%= item.price %>
+                </td>
+                <td >
+                    <%= item.unit %>
+                </td>
+                <td >
+                    <div class="btn-group">
+                        <button class="btn btn-default minusGood" >-</button>
+                        <button class="btn btn-default count_value" disabled="disabled" ><%= item.count %></button>
+                        <button class="btn btn-default addGood" >+</button>
+                    </div>
+                </td>
+                <% if(item.promotion_number) {%>
+                    <td id="total_price"> <%= item.total_price %>元(原价: <%= item.price * item.count%>元)</td>
+                <% } else{%>
+                    <td id="total_price"> <%= item.total_price %>元</td>
+                <% }%>
+            </tr>
+            <%})%>
             </tbody>
         </table>
+        <div class="side-space text-right">
+            <span>总计：<%= total_payments%>元</span>
+            <br>
+            <p><a id="pay_button" class="btn btn-primary btn-lg" href="/pay_page">付款</a></p>
+        </div>
     </div>
 
 </div>
@@ -27,5 +60,6 @@
         $("#cart").addClass("active");
     })
 </script>
+<script src="/javascripts/page_functions.js"></script>
 
 <%- include footer.ejs%>
