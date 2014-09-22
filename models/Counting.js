@@ -28,9 +28,7 @@ Counting.prototype.calculate_total_price = function(callback){
     counting.total_price = 0;
     counting.promotion_number = 0;
     Promotion.loadPromotion("BUY_TWO_GET_ONE_FREE", counting.barcode, function(err, promotion){
-        console.log("loaded promotion length:"+ promotion.length);
         if(promotion.length == 1) {
-            console.log("counting count:"+counting.count);
             var left_count = counting.count;
             while(left_count-3 >= 0){
                 counting.total_price += counting.price*2;
@@ -42,7 +40,6 @@ Counting.prototype.calculate_total_price = function(callback){
         else {
             counting.total_price += counting.price*counting.count;
         }
-        console.log("counting info total_price:"+counting.total_price);
        callback(counting);
     });
 };
@@ -60,7 +57,6 @@ Counting.get_cart_counting = function(callback) {
 
 Counting.get_cart_info = function(barcode, callback) {
     if(!mongodb.openCalled){
-        console.log("数据库没有被打开************")
         mongodb.open(function (err, db) {
             if (err) {
                 return callback(err);
@@ -89,9 +85,7 @@ Counting.get_cart_info = function(barcode, callback) {
         });
     }
     else {
-        console.log("数据库被打开了%%%%%%%%%%%%%%%%%%")
         mongodb.collection('cart_items', function(err, collection) {
-            console.log("*************************");
             if (err) {
                 mongodb.close();
                 return callback(err);
@@ -200,7 +194,6 @@ Counting.prototype.update_item = function(item, callback) {
                 });
             });
         });
-
     }
     else{
         mongodb.collection('cart_items', function (err, collection) {
@@ -237,7 +230,6 @@ Counting.clear_cart = function (callback) {
                     return callback(err);
                 }
 
-
                 //删除 cart_items 集合
                 collection.drop( function (err) {
                     mongodb.close();
@@ -248,7 +240,6 @@ Counting.clear_cart = function (callback) {
                 });
             });
         });
-
     }
     else{
         mongodb.collection('cart_items', function (err, collection) {
@@ -267,5 +258,5 @@ Counting.clear_cart = function (callback) {
             });
         });
     }
-}
+};
 

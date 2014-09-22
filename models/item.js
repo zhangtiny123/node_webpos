@@ -10,23 +10,6 @@ function Item(type, barcode, name, unit, price) {
 
 module.exports = Item;
 
-//Item.find_by_barcode = function(barcode){
-//    Item.loadAllItems(null, function(err, products){
-//        if(err) {
-//            products = []
-//        }
-//
-//    });
-//
-//    console.log("items:"+items);
-//    for (var i=0; i<items.length; i++) {
-//        if (items[i].barcode == barcode) {
-//            return items[i];
-//        }
-//    }
-//    return null;
-//};
-
 Item.get_item = function( barcode, callback){
     mongodb.open(function (err, db) {
         if (err) {

@@ -64,11 +64,32 @@ module.exports = function(app){
                 return item.promotion_number != 0;
             });
             res.render('pay_page',{
+                current_time : Processor.current_time(),
                 bought_list : items,
                 saved_list : promotion_list,
                 count_of_cart : count,
                 total_payments : Processor.calculate_total_payments(items),
                 saved_money : Processor.calculate_saved_money(items)
+            });
+        })
+    });
+
+    app.get('/sure_pay', function(req, res) {
+        Counting.clear_cart(function(err) {
+            if (err) {
+                console.log(err);
+            }
+            item.get_item(null, function(err, products){
+                if (err){
+                    products = [];
+                }
+
+                Counting.get_cart_counting(function(count) {
+                    res.render('product_list',{
+                        product_list : products,
+                        count_of_cart : count
+                    });
+                });
             });
         })
     })

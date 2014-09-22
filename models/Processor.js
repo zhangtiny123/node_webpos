@@ -7,7 +7,6 @@ var Counting = require("./Counting.js");
 var Item = require("./item.js");
 
 function Processor() {
-
 }
 
 module.exports = Processor;
@@ -43,7 +42,6 @@ Processor.process_add_item = function(input_barcode ,add_num, callback) {
             Item.get_item(input_barcode, function(err, product) {
                 var counting = new Counting(product[0].type, product[0].name, product[0].barcode,
                     product[0].price, product[0].unit);
-                console.log("the fresh counting item:"+counting.name);
                 counting.count_plus(add_num);
                 counting.calculate_total_price(function(calculated_counting){
                     calculated_counting.save(function(err) {
@@ -75,27 +73,6 @@ Processor.current_time = function(){
 
         formattedDateString = year + '年' + month + '月' + date + '日 ' + hour + ':' + minute + ':' + second;
     return formattedDateString;
-};
-
-Processor.get_pay_list = function(list){
-    var pay_list = '';
-    for (var k=0; k<list.length; k++){
-        pay_list +=
-            '名称：' + list[k].name + '，数量：' + list[k].count + list[k].unit +
-            '，单价：' + list[k].price.toFixed(2) + '(元)，小计：' + list[k].total_price.toFixed(2) + '(元)\n'
-    }
-    return pay_list;
-};
-
-Processor.get_free_list = function(list){
-    var free_list = '';
-    for (var k1=0; k1<list.length; k1++){
-        if(list[k1].promotion_number != 0){
-            free_list +=
-                '名称：' + list[k1].name + '，数量：' + list[k1].promotion_number + list[k1].unit + '\n'
-        }
-    }
-    return free_list;
 };
 
 Processor.calculate_total_payments = function(counting_list) {
