@@ -30,8 +30,8 @@ Processor.process_add_item = function(input_barcode ,add_num, callback) {
                     if (err) {
                         console.log("error:"+err);
                     }
-                    Counting.get_cart_counting(function (count) {
-                        callback(count, calculated_counting);
+                    Counting.get_cart_counting(function (count, total_payments) {
+                        callback(count, total_payments, calculated_counting);
                     })
                 });
             });
@@ -48,8 +48,8 @@ Processor.process_add_item = function(input_barcode ,add_num, callback) {
                         if (err) {
                             console.log(err);
                         }
-                        Counting.get_cart_counting(function (count) {
-                            callback(count, calculated_counting);
+                        Counting.get_cart_counting(function (count, total_payments) {
+                            callback(count, total_payments, calculated_counting);
                         })
                     });
                 });

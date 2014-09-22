@@ -41,14 +41,20 @@ module.exports = function(app){
         else {
             add_number = -1;
         }
-        Processor.process_add_item(barcode, add_number, function(cart_count, counting) {
-            res.json({cart_count:cart_count, counting : counting});
+        Processor.process_add_item(barcode, add_number, function(cart_count, total_payments, counting) {
+            res.json({cart_count : cart_count, total_payments : total_payments, counting : counting});
+            if (cart_count == 0) {
+                Counting.clear_cart(function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+            }
         });
     });
 
     app.get('/cart', function(req, res) {
-        Counting.get_cart_counting(function(count, items) {
-            console.log("总价：：："+Processor.calculate_total_payments(items));
+        Counting.get_cart_counting(function(count, total_payments, items) {
             res.render('cart', {
                 total_payments : Processor.calculate_total_payments(items),
                 cart_items : items,
@@ -59,7 +65,7 @@ module.exports = function(app){
     });
 
     app.get('/pay_page', function(req, res) {
-        Counting.get_cart_counting(function(count, items) {
+        Counting.get_cart_counting(function(count, total_payments, items) {
             var promotion_list = _.filter(items, function(item) {
                 return item.promotion_number != 0;
             });

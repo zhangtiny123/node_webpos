@@ -35,7 +35,7 @@
                     <%= item.count %>
                 </td>
                 <% if(item.promotion_number) {%>
-                <td id="total_price"> <%= item.total_price %>元(原价: <%= item.price * item.count%>元)</td>
+                <td id="total_price"> <%= item.total_price.toFixed(2) %>元(原价: <%= (item.price * item.count).toFixed(2)%>元)</td>
                 <% } else{%>
                 <td id="total_price"> <%= item.total_price %>元</td>
                 <% }%>

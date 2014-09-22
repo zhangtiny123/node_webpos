@@ -19,6 +19,9 @@ function Counting(type, name,barcode,price,unit){
 module.exports = Counting;
 
 Counting.prototype.count_plus = function(plus_number){
+    if (this.count == 0 && plus_number == -1){
+        return;
+    }
     this.count += plus_number;
 };
 
@@ -48,10 +51,12 @@ Counting.get_cart_counting = function(callback) {
     Counting.get_cart_info(null, function(err, cart_items){
 
         var count = 0;
+        var total_payments = 0;
         for (var i=0; i<cart_items.length; i++) {
             count += cart_items[i].count;
+            total_payments += cart_items[i].total_price;
         }
-        callback(count ,cart_items);
+        callback(count , total_payments, cart_items);
     })
 };
 

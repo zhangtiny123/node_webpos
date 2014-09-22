@@ -38,24 +38,23 @@
                     </div>
                 </td>
                 <% if(item.promotion_number) {%>
-                    <td id="total_price"> <%= item.total_price %>元(原价: <%= item.price * item.count%>元)</td>
+                    <td id="total_price"> <%= item.total_price.toFixed(2) %>元(原价: <%= item.price * item.count.toFixed(2)%>元)</td>
                 <% } else{%>
-                    <td id="total_price"> <%= item.total_price %>元</td>
+                    <td id="total_price"> <%= item.total_price.toFixed(2) %>元</td>
                 <% }%>
             </tr>
             <%})%>
             </tbody>
         </table>
         <div class="side-space text-right">
-            <span>总计：<%= total_payments%>元</span>
+            <span id="total_payments">总计：<%= total_payments%>元</span>
             <br>
             <p><a id="pay_button" class="btn btn-primary btn-lg" href="/pay_page">付款</a></p>
         </div>
     </div>
-
 </div>
 
-<script>
+<script >
     $(document).ready(function() {
         $("#cart").addClass("active");
     })
