@@ -1,0 +1,19 @@
+<%- include admin_header.ejs%>
+<br><br>
+<button>保存属性</button>
+<button>添加属性</button>
+<button>删除属性</button>
+<button>取消</button>
+<br>
+<br>
+<br>
+<form action="post">
+    商品名称：<input type="text" placeholder="请输入商品名称" value="康师傅蛋卷">
+    商品数量：<input type="button" value="-"><input type="text" value="123"><input type="button" value="+">
+    <br><br>
+    单价：<input type="text" placeholder="请输入单价" value="5">
+    单位：<input type="text" placeholder="请输入单位" value="袋">
+    <br><br>
+    生产日期：<input type="text" placeholder="请输入生产日期" value="2014/9/21">
+</form>
+<%- include admin_footer.ejs%>

@@ -98,5 +98,17 @@ module.exports = function(app){
                 });
             });
         })
+    });
+
+    app.get('/admin', function(req, res) {
+        item.get_item(null, function(err, products) {
+            if(err) {
+                products = {};
+            }
+            res.render('ad_products', {
+                products : products
+            })
+        });
+
     })
 };
