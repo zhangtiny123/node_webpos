@@ -109,6 +109,21 @@ module.exports = function(app){
                 products : products
             })
         });
+    });
 
+    app.get('/ad_add_products', function(req, res) {
+        res.render('ad_add_products', {})
+    });
+
+    app.get('/ad_add_property', function(req, res) {
+        res.render('ad_add_property', {})
+    });
+
+    app.get('/ad_delete_property', function(req, res) {
+        res.render('ad_delete_property', {})
+    });
+
+    app.get('/ad_products_detail', function(req, res) {
+        res.render('ad_products_detail',{})
     })
 };

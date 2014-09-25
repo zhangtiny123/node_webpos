@@ -39,7 +39,8 @@ a:hover{
 	color: rgb(218,15,218);
 }
 
-button{
+.btn{
+    background-color: #dcdcdc;
 	padding: 5px 10px;
 	border-radius: 2px;
 }
