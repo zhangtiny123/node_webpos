@@ -111,6 +111,19 @@ module.exports = function(app){
         });
     });
 
+    app.post('/delete_item_response', function(req, res) {
+        var product_name = req.body.product_name;
+        console.log("得到的barcode："+ product_name);
+        console.log(typeof (product_name));
+        item.remove_item(product_name, function(err) {
+            if (err) {
+                return callback(err);
+            }
+            res.json({data:"success"});
+
+        })
+    });
+
     app.get('/ad_add_products', function(req, res) {
         res.render('ad_add_products', {})
     });

@@ -1,13 +1,13 @@
 <%- include admin_header.ejs%>
-<br><br>
-<a class="btn">保存属性</a>
-<a class="btn" href="/ad_add_property">添加属性</a>
-<a class="btn" href="/ad_delete_property">删除属性</a>
-<a class="btn">取消</a>
-<br>
-<br>
-<br>
-<form action="post">
+<form method="post">
+    <br><br>
+    <a class="btn" >保存属性</a>
+    <a class="btn" href="/ad_add_property">添加属性</a>
+    <a class="btn" href="/ad_delete_property">删除属性</a>
+    <a class="btn">取消</a>
+    <br>
+    <br>
+    <br>
     商品名称：<input type="text" placeholder="请输入商品名称" value="康师傅蛋卷">
     商品数量：<input type="button" value="-"><input type="text" value="123"><input type="button" value="+">
     <br><br>

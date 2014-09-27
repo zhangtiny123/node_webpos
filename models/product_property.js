@@ -65,7 +65,7 @@ Product_property.prototype.save = function(callback) {
         name : this.name,
         property_value : this.property_value,
         isFixed : this.isFixed
-    }
+    };
 
     //打开数据库
     if(!mongodb.openCalled){
