@@ -1,19 +1,24 @@
 <%- include admin_header.ejs%>
 <form method="post">
     <br><br>
-    <a class="btn" >保存属性</a>
-    <a class="btn" href="/ad_add_property">添加属性</a>
+    <button class="btn" type="submit">保存属性</button>
+    <a class="btn" href="/ad_add_property?product_name=<%= product_item%>">添加属性</a>
     <a class="btn" href="/ad_delete_property">删除属性</a>
     <a class="btn">取消</a>
     <br>
     <br>
     <br>
-    商品名称：<input type="text" placeholder="请输入商品名称" value="康师傅蛋卷">
-    商品数量：<input type="button" value="-"><input type="text" value="123"><input type="button" value="+">
-    <br><br>
-    单价：<input type="text" placeholder="请输入单价" value="5">
-    单位：<input type="text" placeholder="请输入单位" value="袋">
-    <br><br>
-    生产日期：<input type="text" placeholder="请输入生产日期" value="2014/9/21">
+
+    <div>
+        商品名称：<input type="text" name="product_name" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
+            商品数量：<button type="button" class="btn btn-default minus_product">-</button>
+            <input name="total_number" type="text" value="<%= product_item.total_number%>">
+            <button type="button" class="btn btn-default add_product">+</button>
+        <br/>
+        商品价格：<input name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
+        商品单位：<input name="unit" type="text" value="<%= product_item.unit%>">
+        <br/>
+        发布时间：<input name="publish_time" type="text" value="<%= product_item.publish_time%>">
+    </div>
 </form>
 <%- include admin_footer.ejs%>

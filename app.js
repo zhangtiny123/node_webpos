@@ -9,6 +9,7 @@ var http = require('http');
 var path = require('path');
 var MongoStore = require('connect-mongo')(express);
 var settings = require('./settings');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -22,8 +23,8 @@ app.use(express.logger('dev'));
 //app.use(express.urlencoded());
 app.use(express.bodyParser())
 app.use(express.methodOverride());
-
 app.use(express.cookieParser());
+app.use(flash());
 app.use(express.session({
     secret: settings.cookieSecret,
     key: settings.db,//cookie name

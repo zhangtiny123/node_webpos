@@ -70,7 +70,7 @@ module.exports = function(app){
                 return item.promotion_number != 0;
             });
             res.render('pay_page',{
-                current_time : Processor.current_time(),
+                current_time : Processor.current_time(0),
                 bought_list : items,
                 saved_list : promotion_list,
                 count_of_cart : count,
@@ -125,7 +125,28 @@ module.exports = function(app){
     });
 
     app.get('/ad_add_products', function(req, res) {
-        res.render('ad_add_products', {})
+
+        res.render('ad_add_products', {
+
+        })
+    });
+
+    app.post('/ad_add_products', function(req, res) {
+        var type = req.body.type;
+        var name = req.body.name;
+        var total_number = req.body.total_number;
+        var unit = req.body.unit;
+        var price = req.body.price;
+        var publish_time = Processor.current_time(1);
+        console.log("发布时间！！！--"+publish_time);
+
+        var product_item = new item(type, name, unit, price, publish_time, total_number);
+        console.log("对象中的发布时间："+product_item.publish_time);
+        product_item.save(function(err) {
+            if (err) {
+                console.log(err);
+            }
+        })
     });
 
     app.get('/ad_add_property', function(req, res) {
@@ -137,6 +158,37 @@ module.exports = function(app){
     });
 
     app.get('/ad_products_detail', function(req, res) {
-        res.render('ad_products_detail',{})
+        var got_name = req.query.product_name;
+        item.get_item(got_name, function(err, product_item) {
+            console.log("product_item**:"+product_item[0].name);
+            res.render('ad_products_detail',{
+                product_item : product_item[0]
+            })
+        });
+    });
+
+    app.post('/ad_products_detail',function(req,res){
+        var name = req.body.product_name;
+        var total_number = req.body.total_number;
+        var unit = req.body.unit;
+        var price = req.body.price;
+        var publish_time = req.body.publish_time;
+
+
+
+        var product_item = {
+            name : name,
+            total_number : total_number,
+            unit : unit,
+            price : price,
+            publish_time : publish_time
+        };
+
+        item.update_item(product_item, function(err) {
+            if(err) {
+                return err;
+            }
+            res.flash("success!");
+        })
     })
 };

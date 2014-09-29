@@ -1,18 +1,23 @@
 <%- include admin_header.ejs %>
-<form action="post">
+<form method="post">
 <br>
 <br>
-<a class="btn">保存属性</a>
+<button class="btn" type="submit">保存商品</button>
 <a class="btn" href="/ad_add_property">添加属性</a>
 <a class="btn" href="/ad_delete_property">删除属性</a>
 <a class="btn">取消</a>
 <br>
 <br>
 <br>
-    商品名称：<input type="text" placeholder="请输入商品名称">
-    商品数量：<input type="button" value="-"><input type="text"><input type="button" value="+">
+    商品类型：<input type="text" name="type" placeholder="请输入商品类型"/>
+    商品名称：<input type="text" name="name" placeholder="请输入商品名称">
     <br><br>
-    单价：<input type="text" placeholder="请输入单价">
-    单位：<input type="text" placeholder="请输入单位">
+    商品数量：<button type="button" class="btn btn-default minus_product">-</button>
+    <input name="total_number" type="text" >
+    <button type="button" class="btn btn-default add_product">+</button>
+
+    单价(元)：<input type="text" name="price" placeholder="请输入单价">
+    <br><br>
+    单位：<input type="text" name="unit" placeholder="请输入单位">
 </form>
 <%- include admin_footer.ejs %>

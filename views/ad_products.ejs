@@ -20,15 +20,15 @@
         <td class="hidden"><%= item.barcode%></td>
         <td class="number"><%= index+1%></td>
         <td class="product_name"><%= item.name %></td>
-        <td>120</td>
+        <td><%= item.total_number%></td>
         <td><%= item.price %></td>
         <td><%= item.unit %></td>
-        <td >19/9/2014</td>
+        <td ><%= item.publish_time%></td>
         <td>
-            <button class="a_style show_detail" >详情</button>&nbsp;&nbsp;&nbsp;<button class="a_style deleteProduce" >删除</button>
+            <a class="a_style" href="/ad_products_detail?product_name=<%= item.name%>">详情</a>&nbsp;&nbsp;&nbsp;<a class="a_style deleteProduce" href="">删除</a>
         </td>
     </tr>
-    <%})%>
+    <% })%>
     </tbody>
 </table>
 <script src="/my_js/ad_products.js"></script>

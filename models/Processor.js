@@ -59,7 +59,7 @@ Processor.process_add_item = function(input_barcode ,add_num, callback) {
     });
 };
 
-Processor.current_time = function(){
+Processor.current_time = function(choice){
     var dateDigitToString = function (num) {
         return num < 10 ? '0' + num : num;
     };
@@ -69,9 +69,15 @@ Processor.current_time = function(){
         date = dateDigitToString(currentDate.getDate()),
         hour = dateDigitToString(currentDate.getHours()),
         minute = dateDigitToString(currentDate.getMinutes()),
-        second = dateDigitToString(currentDate.getSeconds()),
+        second = dateDigitToString(currentDate.getSeconds());
+    if(choice == 0){
+        var formattedDateString = year + '年' + month + '月' + date + '日 ' + hour + ':' + minute + ':' + second;
+    }
+    else {
+        formattedDateString = date+'/'+month+'/'+year+'  '+hour+':'+minute+':'+second;
+    }
 
-        formattedDateString = year + '年' + month + '月' + date + '日 ' + hour + ':' + minute + ':' + second;
+
     return formattedDateString;
 };
 
