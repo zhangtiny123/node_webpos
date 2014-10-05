@@ -4,8 +4,9 @@
 $(document).ready(function() {
     $(".addGood").on("click", function() {
         var THIS =this;
-        var barcode = $(this).closest("#item_body").find(".hidden").text();
-        $.post('/add_to_cart',{barcode : barcode, type:"add"}, function(data) {
+        var name = $(this).closest("#item_body").find("#product_name").text();
+        console.log("对应的商品名称："+name);
+        $.post('/add_to_cart',{product_name : name, type:"add"}, function(data) {
             $("#cart_count").text(data.cart_count);
 
             $(THIS).closest("#item_body").find(".count_value").text(data.counting.count);
@@ -16,8 +17,9 @@ $(document).ready(function() {
 
     $(".minusGood").on("click", function() {
         var THIS =this;
-        var barcode = $(this).closest("#item_body").find(".hidden").text();
-        $.post('/add_to_cart',{barcode : barcode, type:"minus"}, function(data) {
+        var name = $(this).closest("#item_body").find("#product_name").text();
+        console.log("对应的商品名称："+name);
+        $.post('/add_to_cart',{product_name : name, type:"minus"}, function(data) {
             if (data.cart_count == 0) {
                 window.location.href="/product_list";
             }
@@ -28,14 +30,13 @@ $(document).ready(function() {
 
         })
     });
+
 });
 
-function add_to_cart(barcode) {
-    $.post('/add_to_cart',{barcode : barcode, type:"add"}, function(data) {
+function add_to_cart(name) {
+    $.post('/add_to_cart',{product_name : name, type:"add"}, function(data) {
         $("#cart_count").text(data.cart_count);
     })
-
-
 }
 
 function get_total_price_string(counting) {

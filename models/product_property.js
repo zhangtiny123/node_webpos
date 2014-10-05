@@ -1,11 +1,15 @@
 /**
  * Created by tiny on 14-9-25.
  */
-function Product_property(name, value, isFixed) {
+
+var mongodb = require('./db.js');
+
+function Product_property(name, value) {
     this.name = name;
     this.property_value = value;
-    this.isFixed = isFixed;
 }
+
+module.exports = Product_property;
 
 Product_property.get_properties = function(property_name, callback) {
     if(!mongodb.openCalled){
@@ -113,6 +117,49 @@ Product_property.prototype.save = function(callback) {
     }
 };
 
+Product_property.clear_properties = function(callback) {
+    if(!mongodb.openCalled){
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 properties 集合
+            db.collection('properties', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                //删除 properties 集合
+                collection.drop( function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null);//返回 err 为 null
+                });
+            });
+        });
+    }
+    else{
+        mongodb.collection('cart_items', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            //删除 cart_items 集合
+            collection.drop( function (err) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err
+                }
+                callback(null);//返回 err 为 null
+            });
+        });
+    }
+};
+
 //var c = {name : "商品类型" , property_value:"" , isFixed:true};
 //var i = {name : "商品名称" , property_value: "" , isFixed: true};
 //var j = {name : "商品数量" , property_value: "" , isFixed: true};
@@ -120,4 +167,4 @@ Product_property.prototype.save = function(callback) {
 //var m = {name : "单位" , property_value: "" , isFixed:true};
 //var l = {name : "发布时间" , property_value:"" , isFixed: false};
 //var b = {name : "barcode" , property_value:"" , isFixed:true};
-var jj = {_id : ObjectId("5423c2621ed1808344cc453e") , name : "发布时间",  property_value : "" , isFixed : true}
+//var jj = {_id : ObjectId("5423c2621ed1808344cc453e") , name : "发布时间",  property_value : "" , isFixed : true}

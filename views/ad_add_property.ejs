@@ -1,17 +1,19 @@
 <%- include admin_header.ejs %>
-<br>
-<a class="a_style" href="/admin">商品信息管理</a>>><a class="a_style" href="/ad_add_products">添加商品</a>>>添加属性
-<br>
-<br>
-<br>
-属性名：<input type="text" placeholder="请输入属性名">
-<br>
-属性值：<input type="text" placeholder="请输入该属性的属性值">
-<br>
-<br>
-<br>
-<br>
-<br>
-<a class="btn">保存</a>&nbsp&nbsp&nbsp
-<a class="btn">取消</a>
+<form method="post">
+    <br>
+    <a class="a_style" href="/admin">商品信息管理</a>>><a class="a_style" href="/ad_add_products">添加商品</a>>>添加属性
+    <br>
+    <br>
+    <br>
+    属性名：<input type="text" name="property_name" placeholder="请输入属性名">
+    <br>
+    属性值：<input type="text" name="property_value" placeholder="请输入该属性的属性值">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <button class="btn" type="submit">保存</button>&nbsp&nbsp&nbsp
+    <a class="btn">取消</a>
+</form>
 <%- include admin_footer.ejs %>

@@ -7,6 +7,7 @@ var item = require('../models/item.js');
 var Processor = require('../models/Processor.js');
 var Counting = require('../models/Counting.js');
 var _ = require('underscore');
+var Property = require('../models/product_property.js');
 
 
 module.exports = function(app){
@@ -34,14 +35,14 @@ module.exports = function(app){
     });
 
     app.post('/add_to_cart', function(req, res) {
-        var barcode = req.body.barcode;
+        var name = req.body.product_name;
         if (req.body.type == "add") {
             var add_number = 1;
         }
         else {
             add_number = -1;
         }
-        Processor.process_add_item(barcode, add_number, function(cart_count, total_payments, counting) {
+        Processor.process_add_item(name, add_number, function(cart_count, total_payments, counting) {
             res.json({cart_count : cart_count, total_payments : total_payments, counting : counting});
             if (cart_count == 0) {
                 Counting.clear_cart(function(err) {
@@ -125,10 +126,15 @@ module.exports = function(app){
     });
 
     app.get('/ad_add_products', function(req, res) {
+        Property.get_properties(null, function(err, properties) {
+            if (err) {
+                return err;
+            }
+            res.render('ad_add_products', {
+                extra_attributes : properties
+            })
+        });
 
-        res.render('ad_add_products', {
-
-        })
     });
 
     app.post('/ad_add_products', function(req, res) {
@@ -138,19 +144,45 @@ module.exports = function(app){
         var unit = req.body.unit;
         var price = req.body.price;
         var publish_time = Processor.current_time(1);
-        console.log("发布时间！！！--"+publish_time);
-
-        var product_item = new item(type, name, unit, price, publish_time, total_number);
-        console.log("对象中的发布时间："+product_item.publish_time);
-        product_item.save(function(err) {
+        Property.get_properties(null, function(err, properties) {
             if (err) {
-                console.log(err);
+                properties=[];
             }
-        })
+            var product_item = new item(type, name, unit, price, publish_time, total_number, properties);
+            product_item.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+                Property.clear_properties(function(err) {
+                    if(err) {
+                        return err;
+                    }
+                    res.redirect('/admin');
+                });
+
+            })
+        });
+
     });
 
     app.get('/ad_add_property', function(req, res) {
-        res.render('ad_add_property', {})
+
+        res.render('ad_add_property', {
+
+        })
+    });
+
+    app.post('/ad_add_property', function(req, res) {
+        var property_name = req.body.property_name;
+        var property_value = req.body.property_value;
+        console.log(property_name+'******'+property_value);
+        var property = new Property(property_name, property_value);
+        property.save(function(err) {
+            if(err) {
+                return err;
+            }
+            res.redirect('/ad_add_products');
+        })
     });
 
     app.get('/ad_delete_property', function(req, res) {

@@ -5,10 +5,9 @@
 var mongodb = require('./db.js');
 var Promotion = require('./promotion.js');
 
-function Counting(type, name,barcode,price,unit){
+function Counting(type, name, price, unit){
     this.type = type;
     this.name = name;
-    this.barcode = barcode;
     this.price = price;
     this.unit = unit;
     this.count = 0;
@@ -30,7 +29,7 @@ Counting.prototype.calculate_total_price = function(callback){
 
     counting.total_price = 0;
     counting.promotion_number = 0;
-    Promotion.loadPromotion("BUY_TWO_GET_ONE_FREE", counting.barcode, function(err, promotion){
+    Promotion.loadPromotion("BUY_TWO_GET_ONE_FREE", counting.name, function(err, promotion){
         if(promotion.length == 1) {
             var left_count = counting.count;
             while(left_count-3 >= 0){
@@ -60,7 +59,7 @@ Counting.get_cart_counting = function(callback) {
     })
 };
 
-Counting.get_cart_info = function(barcode, callback) {
+Counting.get_cart_info = function(name, callback) {
     if(!mongodb.openCalled){
         mongodb.open(function (err, db) {
             if (err) {
@@ -73,8 +72,8 @@ Counting.get_cart_info = function(barcode, callback) {
                     return callback(err);
                 }
                 var query = {};
-                if (barcode) {
-                    query.barcode = barcode;
+                if (name) {
+                    query.name = name;
                 }
                 //根据 query 对象查询文章
                 collection.find(query).sort({
@@ -96,8 +95,8 @@ Counting.get_cart_info = function(barcode, callback) {
                 return callback(err);
             }
             var query = {};
-            if (barcode) {
-                query.barcode = barcode;
+            if (name) {
+                query.name = name;
             }
             //根据 query 对象查询文章
             collection.find(query).sort({
@@ -187,7 +186,7 @@ Counting.prototype.update_item = function(item, callback) {
                 }
 
                 var query = {};
-                query.barcode = item.barcode;
+                query.name = item.name;
 
                 //将文档插入 cart_items 集合
                 collection.update(query, item, function (err) {
@@ -208,7 +207,7 @@ Counting.prototype.update_item = function(item, callback) {
             }
 
             var query = {};
-            query.barcode = item.barcode;
+            query.name = item.name;
 
             //将文档插入 cart_items 集合
             collection.update(query, item, function (err) {

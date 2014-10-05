@@ -11,20 +11,22 @@ function Processor() {
 
 module.exports = Processor;
 
-Processor.process_add_item = function(input_barcode ,add_num, callback) {
+Processor.process_add_item = function(input_name ,add_num, callback) {
     var counting;
-    Counting.get_cart_info(input_barcode, function(err, cart_item) {
+    console.log("得到的商品名称："+input_name);
+    Counting.get_cart_info(input_name, function(err, cart_item) {
         if(err) {
             console.log(err);
         }
+        console.log("0.0："+cart_item.length);
 
         //数据库中存在相同的商品
         if (cart_item.length != 0){
-            counting = new Counting(cart_item[0].type, cart_item[0].name, cart_item[0].barcode,
-                cart_item[0].price, cart_item[0].unit);
+            counting = new Counting(cart_item[0].type, cart_item[0].name, cart_item[0].price, cart_item[0].unit);
             counting.count = cart_item[0].count;
             counting._id = new Object(cart_item[0]._id);
             counting.count_plus(add_num);
+            console.log("我要找的："+counting.count);
             counting.calculate_total_price(function(calculated_counting){
                 calculated_counting.update_item(calculated_counting, function(err) {
                     if (err) {
@@ -39,9 +41,8 @@ Processor.process_add_item = function(input_barcode ,add_num, callback) {
 
         //数据库中没有相同的商品
         else {
-            Item.get_item(input_barcode, function(err, product) {
-                var counting = new Counting(product[0].type, product[0].name, product[0].barcode,
-                    product[0].price, product[0].unit);
+            Item.get_item(input_name, function(err, product) {
+                var counting = new Counting(product[0].type, product[0].name, product[0].price, product[0].unit);
                 counting.count_plus(add_num);
                 counting.calculate_total_price(function(calculated_counting){
                     calculated_counting.save(function(err) {

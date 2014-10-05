@@ -2,7 +2,7 @@
 <form method="post">
     <br><br>
     <button class="btn" type="submit">保存属性</button>
-    <a class="btn" href="/ad_add_property?product_name=<%= product_item%>">添加属性</a>
+    <a class="btn" href="/ad_add_property">添加属性</a>
     <a class="btn" href="/ad_delete_property">删除属性</a>
     <a class="btn">取消</a>
     <br>
@@ -14,11 +14,18 @@
             商品数量：<button type="button" class="btn btn-default minus_product">-</button>
             <input name="total_number" type="text" value="<%= product_item.total_number%>">
             <button type="button" class="btn btn-default add_product">+</button>
-        <br/>
+        <br/><br/>
         商品价格：<input name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
         商品单位：<input name="unit" type="text" value="<%= product_item.unit%>">
-        <br/>
+        <br/><br/>
         发布时间：<input name="publish_time" type="text" value="<%= product_item.publish_time%>">
     </div>
+    <br/><br/>
+    <% product_item.extra_properties.forEach(function(attr, index){%>
+    <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
+    <% if(index%2 == 0) {%>
+    <br/><br/>
+    <% }%>
+    <% })%>
 </form>
 <%- include admin_footer.ejs%>

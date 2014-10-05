@@ -17,19 +17,10 @@
             <tbody id="cart_item_body">
             <% cart_items.forEach(function( item, index) {%>
             <tr id="item_body" >
-                <td class="hidden"><%= item.barcode%></td>
-                <td >
-                    <%= item.type%>
-                </td>
-                <td >
-                    <%= item.name %>
-                </td>
-                <td >
-                    <%= item.price %>
-                </td>
-                <td >
-                    <%= item.unit %>
-                </td>
+                <td ><%= item.type%></td>
+                <td id="product_name"><%= item.name %></td>
+                <td ><%= item.price %></td>
+                <td ><%= item.unit %></td>
                 <td >
                     <div class="btn-group">
                         <button class="btn btn-default minusGood" >-</button>

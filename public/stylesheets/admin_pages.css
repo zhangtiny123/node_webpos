@@ -48,6 +48,10 @@ a:hover{
 	border-radius: 2px;
 }
 
+.btn:disabled{
+    background-color: #f5f5f5;
+}
+
 .btn-default {
     color: #333;
     background-color: #fff;
@@ -99,7 +103,7 @@ fieldset[disabled] .btn-default.active {
 	float: left;
 	border: 1px solid;
 	border-top: none;
-	height: 550px;
+	height: 576px;
 	width: 20%
 }
 
@@ -109,7 +113,7 @@ fieldset[disabled] .btn-default.active {
 	border-left: none;
 	border-top: none;
 	width: 79.69%;
-	height: 550px;
+	height: 576px;
 }
 
 .content{

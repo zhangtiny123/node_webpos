@@ -16,20 +16,12 @@
             <tbody id="product_list_body">
                 <% product_list.forEach(function(item,index) {%>
                 <tr >
+                    <td ><%= item.type%></td>
+                    <td id="product_name"><%= item.name %></td>
+                    <td ><%= item.price %></td>
+                    <td ><%= item.unit %></td>
                     <td >
-                        <%= item.type%>
-                    </td>
-                    <td >
-                        <%= item.name %>
-                    </td>
-                    <td >
-                        <%= item.price %>
-                    </td>
-                    <td >
-                        <%= item.unit %>
-                    </td>
-                    <td >
-                        <button class="btn btn-primary btn-lg" onclick=" add_to_cart('<%= item.barcode %>') ">加入购物车</button>
+                        <button class="btn btn-primary btn-lg" onclick=" add_to_cart('<%= item.name %>') ">加入购物车</button>
                     </td>
                 </tr>
                 <%})%>
