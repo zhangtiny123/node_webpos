@@ -114,8 +114,6 @@ module.exports = function(app){
 
     app.post('/delete_item_response', function(req, res) {
         var product_name = req.body.product_name;
-        console.log("得到的barcode："+ product_name);
-        console.log(typeof (product_name));
         item.remove_item(product_name, function(err) {
             if (err) {
                 return callback(err);
@@ -175,7 +173,6 @@ module.exports = function(app){
     app.post('/ad_add_property', function(req, res) {
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;
-        console.log(property_name+'******'+property_value);
         var property = new Property(property_name, property_value);
         property.save(function(err) {
             if(err) {
@@ -186,7 +183,62 @@ module.exports = function(app){
     });
 
     app.get('/ad_delete_property', function(req, res) {
-        res.render('ad_delete_property', {})
+        var product_name = req.query.product_name;
+        if(product_name == undefined){
+            Property.get_properties(null, function(err, properties){
+                console.log("properties:"+properties);
+                res.render('ad_delete_property', {
+                    middle_path : "添加商品",
+                    properties : properties
+                })
+            })
+        }
+        else {
+            item.get_item(product_name, function(err, the_item) {
+                res.render('ad_delete_property', {
+                    middle_path : product_name,
+                    properties : the_item[0].extra_properties
+                })
+            })
+        }
+
+    });
+
+    app.post('/delete_property', function(req, res) {
+        var property_name = req.body.property_name;
+        var product_name = req.body.path_value;
+
+        if(product_name == "添加商品") {
+            Property.remove_property(property_name, function(err) {
+                if (err) {
+                    return err;
+                }
+                res.json({message:"delete success"});
+            })
+        }
+        else {
+            item.get_item(product_name, function(err, the_item) {
+                var extra_properties = the_item[0].extra_properties;
+                var i = 0;
+                var delete_index = null;
+                _.each(extra_properties, function(property) {
+                    if (property.name == property_name) {
+                        delete_index = i;
+
+                    }
+                    i += 1;
+                });
+                the_item[0].extra_properties.splice(delete_index, 1);
+                var new_item = new item(the_item[0].type, the_item[0].name, the_item[0].unit, the_item[0].price, the_item[0].publish_time, the_item[0].total_number, the_item[0].extra_properties);
+                new_item._id = new Object(the_item[0]._id);
+                new_item.save(function(err) {
+                    if (err) {
+                        return err;
+                    }
+                    res.json({message:"delete success"});
+                })
+            })
+        }
     });
 
     app.get('/ad_products_detail', function(req, res) {

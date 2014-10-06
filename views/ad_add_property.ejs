@@ -5,15 +5,16 @@
     <br>
     <br>
     <br>
-    属性名：<input type="text" name="property_name" placeholder="请输入属性名">
+    属性名：<input id="attr_name" type="text" name="property_name" placeholder="请输入属性名">
     <br>
-    属性值：<input type="text" name="property_value" placeholder="请输入该属性的属性值">
-    <br>
-    <br>
+    属性值：<input id="attr_value" type="text" name="property_value" placeholder="请输入该属性的属性值">
     <br>
     <br>
     <br>
-    <button class="btn" type="submit">保存</button>&nbsp&nbsp&nbsp
-    <a class="btn">取消</a>
+    <br>
+    <br>
+    <button id="save_btn" class="btn" type="submit">保存</button>&nbsp&nbsp&nbsp
+    <a class="btn" href="/ad_add_products">取消</a>
 </form>
+<script src="/my_js/ad_add_property.js"></script>
 <%- include admin_footer.ejs %>

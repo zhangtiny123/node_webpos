@@ -67,8 +67,7 @@ Product_property.get_properties = function(property_name, callback) {
 Product_property.prototype.save = function(callback) {
     var property = {
         name : this.name,
-        property_value : this.property_value,
-        isFixed : this.isFixed
+        property_value : this.property_value
     };
 
     //打开数据库
@@ -155,6 +154,50 @@ Product_property.clear_properties = function(callback) {
                     return callback(err);//失败！返回 err
                 }
                 callback(null);//返回 err 为 null
+            });
+        });
+    }
+};
+
+Product_property.remove_property = function(property_name, callback) {
+    if(!mongodb.openCalled) {
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 properties 集合
+            db.collection('properties', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+
+                collection.remove({name: property_name}, function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null);
+                });
+            });
+        });
+    }
+    else {
+        //读取 properties 集合
+        mongodb.collection('properties', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            //根据 query 对象查询文章
+            collection.remove({name: property_name}, function (err) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err
+                }
+                callback(null);
             });
         });
     }
