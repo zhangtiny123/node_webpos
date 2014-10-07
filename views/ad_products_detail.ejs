@@ -2,7 +2,7 @@
 <form method="post">
     <br><br>
     <button class="btn" type="submit">保存属性</button>
-    <a class="btn" href="/ad_add_property">添加属性</a>
+    <a class="btn" href="/ad_add_property?product_name=<%= product_item.name%>">添加属性</a>
     <a class="btn" href="/ad_delete_property?product_name=<%= product_item.name%>">删除属性</a>
     <a class="btn">取消</a>
     <br>
@@ -11,9 +11,9 @@
 
     <div>
         商品名称：<input type="text" name="product_name" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
-            商品数量：<button type="button" class="btn btn-default minus_product">-</button>
-            <input name="total_number" type="text" value="<%= product_item.total_number%>">
-            <button type="button" class="btn btn-default add_product">+</button>
+            商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
+            <input class="number_input" name="total_number" type="text" value="<%= product_item.total_number%>">
+            <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
         <br/><br/>
         商品价格：<input name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
         商品单位：<input name="unit" type="text" value="<%= product_item.unit%>">
@@ -23,7 +23,7 @@
     <br/><br/>
     <% product_item.extra_properties.forEach(function(attr, index){%>
     <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
-    <% if(index%2 == 0) {%>
+    <% if(index%2 == 1) {%>
     <br/><br/>
     <% }%>
     <% })%>

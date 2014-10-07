@@ -3,8 +3,7 @@
  */
 $(document).ready(function() {
     $(".minus_product").on("click", function() {
-        var origin = $("#p_number");
-        console.log("origin value:"+parseInt(origin.val()));
+        var origin = $(".p_number");
         if(parseInt(origin.val()) == 0){
             return 0;
         }
@@ -12,8 +11,9 @@ $(document).ready(function() {
     });
 
     $(".add_product").on("click", function() {
-        var origin = $("#p_number");
-        console.log("origin value:"+parseInt(origin.val()));
+        var origin = $(".p_number");
         origin.val(parseInt(origin.val())+1);
     })
+
+
 });

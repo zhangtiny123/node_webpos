@@ -12,7 +12,7 @@ $(document).ready(function() {
         middle_path.attr('href','/ad_products_detail?product_name='+path_value+'');
     }
 
-    $("#delete_property").on("click", function() {
+    $(".delete_property").on("click", function() {
         var THIS = this;
         var property_name = $(this).closest(".property_item").find(".property_name").text();
         if(confirm("确认删除"+property_name+"吗？")){

@@ -17,10 +17,13 @@
     <tbody>
     <% products.forEach(function(item,index) {%>
     <tr class="product_item">
-        <td class="hidden"><%= item.barcode%></td>
         <td class="number"><%= index+1%></td>
         <td class="product_name"><%= item.name %></td>
-        <td><%= item.total_number%></td>
+        <td>
+            <button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
+            <input class="number_input p_number" name="total_number" type="text" value="<%= item.total_number%>">
+            <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
+        </td>
         <td><%= item.price %></td>
         <td><%= item.unit %></td>
         <td ><%= item.publish_time%></td>

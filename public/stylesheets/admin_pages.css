@@ -52,6 +52,10 @@ a:hover{
     background-color: #f5f5f5;
 }
 
+.number_input{
+    width: 40px;
+}
+
 .btn-default {
     color: #333;
     background-color: #fff;
@@ -92,6 +96,12 @@ fieldset[disabled] .btn-default.active {
 .btn-default .badge {
     color: #fff;
     background-color: #333;
+}
+
+.add_minus_btn{
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 24px;
 }
 
 .page_title{

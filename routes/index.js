@@ -112,6 +112,25 @@ module.exports = function(app){
         });
     });
 
+    app.post('/direct_change_number', function(req, res) {
+        var add_number = req.body.add_number;
+        var product_name = req.body.product_name;
+        item.get_item(product_name, function(err, product_item) {
+            if (err) {
+                return err;
+            }
+            add_number = parseInt(add_number);
+            var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number)+add_number, product_item[0].extra_properties);
+            changed_item._id = new Object(product_item[0]._id);
+            item.update_item(changed_item, function(err) {
+                if (err) {
+                    return err;
+                }
+                res.json({message:"success"});
+            })
+        })
+    });
+
     app.post('/delete_item_response', function(req, res) {
         var product_name = req.body.product_name;
         item.remove_item(product_name, function(err) {
@@ -165,21 +184,48 @@ module.exports = function(app){
 
     app.get('/ad_add_property', function(req, res) {
 
-        res.render('ad_add_property', {
-
-        })
+        var product_name = req.query.product_name;
+        if(product_name == undefined){
+                res.render('ad_add_property', {
+                    middle_path : "添加商品"
+                })
+        }
+        else {
+                res.render('ad_add_property', {
+                    middle_path : product_name
+            })
+        }
     });
 
     app.post('/ad_add_property', function(req, res) {
+        var product_name = req.body.product_name;
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;
-        var property = new Property(property_name, property_value);
-        property.save(function(err) {
-            if(err) {
-                return err;
-            }
-            res.redirect('/ad_add_products');
-        })
+
+        if(product_name == "添加商品"){
+            var property = new Property(property_name, property_value);
+            property.save(function(err) {
+                if(err) {
+                    return err;
+                }
+                res.redirect('/ad_add_products');
+            })
+        }
+        else{
+            var property1 = new Property(property_name, property_value);
+            item.get_item(product_name, function(err, product_item) {
+                var extra_attrs = product_item[0].extra_properties;
+                extra_attrs.push(property1);
+                var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number), extra_attrs);
+                changed_item._id = new Object(product_item[0]._id);
+                item.update_item(changed_item, function(err) {
+                    if (err) {
+                        return err;
+                    }
+                    res.json({message:"success"});
+                })
+            })
+        }
     });
 
     app.get('/ad_delete_property', function(req, res) {
@@ -231,11 +277,11 @@ module.exports = function(app){
                 the_item[0].extra_properties.splice(delete_index, 1);
                 var new_item = new item(the_item[0].type, the_item[0].name, the_item[0].unit, the_item[0].price, the_item[0].publish_time, the_item[0].total_number, the_item[0].extra_properties);
                 new_item._id = new Object(the_item[0]._id);
-                new_item.save(function(err) {
+                item.update_item(new_item, function(err) {
                     if (err) {
                         return err;
                     }
-                    res.json({message:"delete success"});
+                    res.json({message:"success"});
                 })
             })
         }
@@ -244,7 +290,6 @@ module.exports = function(app){
     app.get('/ad_products_detail', function(req, res) {
         var got_name = req.query.product_name;
         item.get_item(got_name, function(err, product_item) {
-            console.log("product_item**:"+product_item[0].name);
             res.render('ad_products_detail',{
                 product_item : product_item[0]
             })

@@ -13,9 +13,9 @@
         商品类型：<input id="p_type" type="text" name="type" placeholder="请输入商品类型"/>
         商品名称：<input id="p_name" type="text" name="name" placeholder="请输入商品名称">
         <br><br>
-        商品数量：<button type="button" class="btn btn-default minus_product">-</button>
-        <input id="p_number" name="total_number" type="text" value="0">
-        <button type="button" class="btn btn-default add_product">+</button>
+        商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
+        <input class="number_input p_number" name="total_number" type="text" value="0">
+        <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
 
         单价(元)：<input id="p_price" type="text" name="price" placeholder="请输入单价">
         <br><br>
@@ -24,7 +24,7 @@
     <br/><br/>
     <% extra_attributes.forEach(function(attr, index){%>
         <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
-        <% if(index%2 == 0) {%>
+        <% if(index%2 == 1) {%>
         <br/><br/>
         <% }%>
     <% })%>
