@@ -1,31 +1,35 @@
 <%- include admin_header.ejs%>
 <form method="post">
     <br><br>
-    <button class="btn" type="submit">保存属性</button>
+    <button id="save_change" class="btn" type="submit">保存属性</button>
     <a class="btn" href="/ad_add_property?product_name=<%= product_item.name%>">添加属性</a>
     <a class="btn" href="/ad_delete_property?product_name=<%= product_item.name%>">删除属性</a>
-    <a class="btn">取消</a>
+    <a class="btn" href="/ad_products_detail?product_name=<%= product_item.name%>">取消</a>
     <br>
     <br>
     <br>
 
     <div>
-        商品名称：<input type="text" name="product_name" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
+        商品名称：<input id="p_name" type="text" name="product_name" readonly="true" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
             商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
-            <input class="number_input" name="total_number" type="text" value="<%= product_item.total_number%>">
+            <input id="p_number" class="number_input" name="total_number" type="text" value="<%= product_item.total_number%>">
             <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
         <br/><br/>
-        商品价格：<input name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
-        商品单位：<input name="unit" type="text" value="<%= product_item.unit%>">
+        商品价格：<input id="p_price" name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
+        商品单位：<input id="p_unit" name="unit" type="text" value="<%= product_item.unit%>">
         <br/><br/>
-        发布时间：<input name="publish_time" type="text" value="<%= product_item.publish_time%>">
+        发布时间：<input id="p_publish_time" name="publish_time" type="text" readonly="true" value="<%= product_item.publish_time%>">
     </div>
+
+    <br/><br/>
+    其它属性（如果不要请删除，需要更正请重新添加）：
     <br/><br/>
     <% product_item.extra_properties.forEach(function(attr, index){%>
-    <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
+    <%= attr.name%>:<input name="<%= attr.name%>" type="text" readonly="true" value="<%= attr.property_value%>">
     <% if(index%2 == 1) {%>
     <br/><br/>
     <% }%>
     <% })%>
 </form>
+<script src="/my_js/ad_products_detail.js"></script>
 <%- include admin_footer.ejs%>

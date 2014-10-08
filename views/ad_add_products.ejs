@@ -2,7 +2,7 @@
 <form method="post">
 <br>
 <br>
-<button class="btn" type="submit">保存商品</button>
+<button id="save_btn" class="btn" type="submit" disabled="disabled">保存商品</button>
 <a class="btn" href="/ad_add_property">添加属性</a>
 <a class="btn" href="/ad_delete_property">删除属性</a>
 <a class="btn" href="/admin">取消</a>
@@ -10,16 +10,16 @@
 <br>
 <br>
     <div id="add_body">
-        商品类型：<input id="p_type" type="text" name="type" placeholder="请输入商品类型"/>
-        商品名称：<input id="p_name" type="text" name="name" placeholder="请输入商品名称">
+        商品类型：<input class="p_elements" type="text" name="type" placeholder="请输入商品类型"/>
+        商品名称：<input class="p_elements" type="text" name="name" placeholder="请输入商品名称">
         <br><br>
         商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
         <input class="number_input p_number" name="total_number" type="text" value="0">
         <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
 
-        单价(元)：<input id="p_price" type="text" name="price" placeholder="请输入单价">
+        单价(元)：<input class="p_elements" type="text" name="price" placeholder="请输入单价">
         <br><br>
-        单位：<input id="p_unit" type="text" name="unit" placeholder="请输入单位">
+        单位：<input class="p_elements" type="text" name="unit" placeholder="请输入单位">
     </div>
     <br/><br/>
     <% extra_attributes.forEach(function(attr, index){%>

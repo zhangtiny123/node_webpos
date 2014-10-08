@@ -130,7 +130,7 @@ Product_property.clear_properties = function(callback) {
                 }
 
                 //删除 properties 集合
-                collection.drop( function (err) {
+                collection.remove({}, function (err) {
                     mongodb.close();
                     if (err) {
                         return callback(err);//失败！返回 err
@@ -148,7 +148,7 @@ Product_property.clear_properties = function(callback) {
             }
 
             //删除 cart_items 集合
-            collection.drop( function (err) {
+            collection.remove({}, function (err) {
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err

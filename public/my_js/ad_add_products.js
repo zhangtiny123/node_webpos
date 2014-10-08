@@ -13,7 +13,17 @@ $(document).ready(function() {
     $(".add_product").on("click", function() {
         var origin = $(".p_number");
         origin.val(parseInt(origin.val())+1);
+    });
+
+
+    $(".p_elements").bind("input", function() {
+        console.log("监视p_type:"+$(this).val());
+        var type_value = $(this).val();
+        if(type_value != "") {
+            $("#save_btn").removeAttr('disabled','disabled');
+        }
+        else {
+            $("#save_btn").attr('disabled','disabled');
+        }
     })
-
-
 });

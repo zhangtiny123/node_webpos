@@ -174,6 +174,7 @@ module.exports = function(app){
                     if(err) {
                         return err;
                     }
+                    console.log("执行完了清除函数");
                     res.redirect('/admin');
                 });
 
@@ -270,7 +271,6 @@ module.exports = function(app){
                 _.each(extra_properties, function(property) {
                     if (property.name == property_name) {
                         delete_index = i;
-
                     }
                     i += 1;
                 });
@@ -298,26 +298,25 @@ module.exports = function(app){
 
     app.post('/ad_products_detail',function(req,res){
         var name = req.body.product_name;
-        var total_number = req.body.total_number;
-        var unit = req.body.unit;
-        var price = req.body.price;
-        var publish_time = req.body.publish_time;
+
+
+        item.get_item(name, function(err, product_item) {
+            product_item[0].price = req.body.price;
+            product_item[0].total_number = req.body.total_number;
+            product_item[0].unit = req.body.unit;
+
+
+            var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number), product_item[0].extra_properties);
+            changed_item._id = new Object(product_item[0]._id);
+            item.update_item(changed_item, function(err) {
+                if (err) {
+                    return err;
+                }
+                res.redirect('/admin');
+            })
+        });
 
 
 
-        var product_item = {
-            name : name,
-            total_number : total_number,
-            unit : unit,
-            price : price,
-            publish_time : publish_time
-        };
-
-        item.update_item(product_item, function(err) {
-            if(err) {
-                return err;
-            }
-            res.flash("success!");
-        })
     })
 };
