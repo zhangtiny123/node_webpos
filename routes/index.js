@@ -102,12 +102,16 @@ module.exports = function(app){
     });
 
     app.get('/admin', function(req, res) {
-        item.get_item(null, function(err, products) {
+        var page = req.query.p ? parseInt(req.query.p) : 1;
+        item.get_ten_item(null, page, function(err, products, total) {
             if(err) {
                 products = {};
             }
             res.render('ad_products', {
-                products : products
+                products : products,
+                page: page,
+                isFirstPage: (page - 1) == 0,
+                isLastPage: ((page - 1) * 10 + products.length) == total
             })
         });
     });

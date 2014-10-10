@@ -67,6 +67,43 @@ Item.get_item = function( name, callback){
     }
 };
 
+Item.get_ten_item = function(name, page, callback) {
+        //打开数据库
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 pos 集合
+            db.collection('pos', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+                var query = {};
+                if (name) {
+                    query.name = name;
+                }
+                //使用 count 返回特定查询的文档数 total
+                collection.count(query, function (err, total) {
+                    //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
+                    collection.find(query, {
+                        skip: (page - 1)*10,
+                        limit: 10
+                    }).sort({
+                        publish_time : -1
+                    }).toArray(function (err, docs) {
+                        mongodb.close();
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        callback(null, docs, total);
+                    });
+                });
+            });
+        });
+};
+
 Item.prototype.save = function(callback) {
     var item = {};
     item.type = this.type;
