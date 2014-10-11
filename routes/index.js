@@ -190,6 +190,7 @@ module.exports = function(app){
 
     app.get('/ad_add_property', function(req, res) {
         var id = req.query.id;
+        console.log("这里的id是："+id);
         if (id != undefined) {
             var product_id = new ObjectID(id);
             item.get_item_test(product_id, function(err, item) {
@@ -198,7 +199,7 @@ module.exports = function(app){
                 }
                 var product_name = item[0].name;
                 res.render('ad_add_property', {
-                    product_id : item[0]._id,
+                    product_id : product_id,
                     middle_path : product_name
                 })
             });
@@ -212,6 +213,7 @@ module.exports = function(app){
     });
 
     app.post('/ad_add_property', function(req, res) {
+        var product_id = new ObjectID(req.body.product_id);
         var product_name = req.body.product_name;
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;

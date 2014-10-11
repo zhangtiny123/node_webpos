@@ -48,3 +48,23 @@ $("#save_btn").on("click", function(){
         alert("商品类型，商品名称，单位，单价均不能为空，商品数量不能为0！请重新输入");
     }
 });
+
+var check_null = function() {
+    console.log("执行了check函数")
+    var control_btn = true;
+    $("input").each( function() {
+        if($(this).val() == "") {
+            control_btn = false;
+        }
+    });
+    if($('#p_number').val() == 0) {
+        control_btn = false;
+    }
+    console.log(control_btn);
+    if(control_btn) {
+        $("#save_btn").attr("disabled", false);
+    }
+    else {
+        $("#save_btn").attr("disabled", true)
+    }
+};
