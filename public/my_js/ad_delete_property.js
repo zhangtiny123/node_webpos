@@ -5,11 +5,12 @@
 
 var middle_path = $("#middle_path");
 var path_value = middle_path.text();
+var id = $(".hidden").text();
 if(path_value == "添加商品") {
     middle_path.attr('href','/ad_add_products')
 }
 else {
-    middle_path.attr('href','/ad_products_detail?product_name='+path_value+'');
+    middle_path.attr('href','/ad_products_detail?id='+id+'');
 }
 
 $(".delete_property").on("click", function() {

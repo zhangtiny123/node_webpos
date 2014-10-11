@@ -5,13 +5,15 @@
 var i=0;
 var middle_path = $("#middle_path");
 var path_value = middle_path.text();
+var id = $(".hidden").text();
+console.log("the id is :"+id);
 if(path_value == "添加商品") {
     middle_path.attr('href','/ad_add_products')
     $("#cancel").attr('href','/ad_add_products')
 }
 else {
-    middle_path.attr('href','/ad_products_detail?product_name='+path_value+'');
-    $("#cancel").attr('href','/ad_products_detail?product_name='+path_value+'');
+    middle_path.attr('href','/ad_products_detail?id='+id+'');
+    $("#cancel").attr('href','/ad_products_detail?id='+id+'');
 }
 
 $("#save_btn").on("click", function() {
