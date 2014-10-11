@@ -39,4 +39,19 @@ $("#save_btn").on("click", function() {
     }
 });
 
+var check_null = function () {
+    var check_flag = true;
+    $("input").each(function() {
+        if($(this).val() == "") {
+            check_flag = false;
+        }
+    });
+    if(check_flag) {
+        $("#save_btn").attr("disabled", false);
+    }
+    else {
+        $("#save_btn").attr("disabled", true)
+    }
+}
+
 
