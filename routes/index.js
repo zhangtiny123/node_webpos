@@ -213,12 +213,13 @@ module.exports = function(app){
     });
 
     app.post('/ad_add_property', function(req, res) {
-        var product_id = new ObjectID(req.body.product_id);
-        var product_name = req.body.product_name;
+        var p_id = req.body.product_id;
+        var product_id = new ObjectID(p_id);
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;
 
-        if(product_name == "添加商品"){
+        console.log("product_id:"+req.body.product_id);
+        if(p_id == undefined){
             var property = new Property(property_name, property_value);
             property.save(function(err) {
                 if(err) {
@@ -238,7 +239,9 @@ module.exports = function(app){
                     if (err) {
                         return err;
                     }
-                    res.json({message:"success"});
+                    res.redirect("/ad_products_detail?id="+product_id+"");
+
+
                 })
             })
         }
