@@ -243,24 +243,29 @@ module.exports = function(app){
     });
 
     app.get('/ad_delete_property', function(req, res) {
-        var product_name = req.query.product_name;
-        if(product_name == undefined){
+        var id = req.query.id;
+        if (id != undefined) {
+            var product_id = new ObjectID(id);
+            item.get_item_test(product_id, function(err, item) {
+                var product_name = item[0].name;
+                res.render('ad_delete_property', {
+                    product_id : product_id,
+                    middle_path : product_name,
+                    properties : item[0].extra_properties
+                })
+            })
+        }
+        else {
             Property.get_properties(null, function(err, properties){
                 console.log("properties:"+properties);
                 res.render('ad_delete_property', {
+                    product_id : 0,
                     middle_path : "添加商品",
                     properties : properties
                 })
             })
         }
-        else {
-            item.get_item(product_name, function(err, the_item) {
-                res.render('ad_delete_property', {
-                    middle_path : product_name,
-                    properties : the_item[0].extra_properties
-                })
-            })
-        }
+
 
     });
 
