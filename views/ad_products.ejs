@@ -17,6 +17,7 @@
     <tbody>
     <% products.forEach(function(item,index) {%>
     <tr class="product_item">
+        <td class="hidden"><%= item._id%></td>
         <td class="number"><%= index+1%></td>
         <td class="product_name"><%= item.name %></td>
         <td>
@@ -28,7 +29,7 @@
         <td><%= item.unit %></td>
         <td ><%= item.publish_time%></td>
         <td>
-            <a class="a_style" href="/ad_products_detail?product_name=<%= item.name%>">详情</a>&nbsp;&nbsp;&nbsp;<a class="a_style deleteProduce" href="">删除</a>
+            <a class="a_style" href="/ad_products_detail?id=<%= item._id%>">详情</a>&nbsp;&nbsp;&nbsp;<a class="a_style deleteProduce" href="">删除</a>
         </td>
     </tr>
     <% })%>

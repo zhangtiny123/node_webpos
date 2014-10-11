@@ -8,6 +8,7 @@ var Processor = require('../models/Processor.js');
 var Counting = require('../models/Counting.js');
 var _ = require('underscore');
 var Property = require('../models/product_property.js');
+var ObjectID = require('mongodb').ObjectID;
 
 
 module.exports = function(app){
@@ -105,7 +106,7 @@ module.exports = function(app){
         var page = req.query.p ? parseInt(req.query.p) : 1;
         item.get_ten_item(null, page, function(err, products, total) {
             if(err) {
-                products = {};
+                products = [];
             }
             res.render('ad_products', {
                 products : products,
@@ -136,8 +137,8 @@ module.exports = function(app){
     });
 
     app.post('/delete_item_response', function(req, res) {
-        var product_name = req.body.product_name;
-        item.remove_item(product_name, function(err) {
+        var product_id = new ObjectID(req.body.product_id);
+        item.remove_item(product_id, function(err) {
             if (err) {
                 return callback(err);
             }
@@ -179,7 +180,7 @@ module.exports = function(app){
                         return err;
                     }
                     console.log("执行完了清除函数");
-                    res.redirect('/admin');
+                    res.json({message : "save success!"});
                 });
 
             })
@@ -188,16 +189,24 @@ module.exports = function(app){
     });
 
     app.get('/ad_add_property', function(req, res) {
-
-        var product_name = req.query.product_name;
-        if(product_name == undefined){
+        var id = req.query.id;
+        if (id != undefined) {
+            var product_id = new ObjectID(id);
+            item.get_item_test(product_id, function(err, item) {
+                if(err) {
+                    return err;
+                }
+                var product_name = item[0].name;
                 res.render('ad_add_property', {
-                    middle_path : "添加商品"
+                    product_id : item[0]._id,
+                    middle_path : product_name
                 })
+            });
         }
         else {
-                res.render('ad_add_property', {
-                    middle_path : product_name
+            res.render('ad_add_property', {
+                product_id : 0,
+                middle_path : "添加商品"
             })
         }
     });
@@ -292,8 +301,8 @@ module.exports = function(app){
     });
 
     app.get('/ad_products_detail', function(req, res) {
-        var got_name = req.query.product_name;
-        item.get_item(got_name, function(err, product_item) {
+        var _id = new ObjectID(req.query.id);
+        item.get_item_test(_id, function(err, product_item) {
             res.render('ad_products_detail',{
                 product_item : product_item[0]
             })

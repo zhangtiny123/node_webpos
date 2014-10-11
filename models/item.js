@@ -67,8 +67,63 @@ Item.get_item = function( name, callback){
     }
 };
 
+Item.get_item_test = function( _id, callback){
+    if(!mongodb.openCalled) {
+        mongodb.open(function (err, db) {
+            if (err) {
+                return callback(err);
+            }
+            //读取 posts 集合
+            db.collection('pos', function (err, collection) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+                var query = {};
+                if (_id) {
+                    query._id = _id;
+                }
+                //根据 query 对象查询文章
+                collection.find(query).sort({
+                    time: -1
+                }).toArray(function (err, docs) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//失败！返回 err
+                    }
+                    callback(null, docs);//成功！以数组形式返回查询的结果
+                });
+            });
+        });
+    }
+    else{
+        //读取 posts 集合
+        mongodb.collection('pos', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            var query = {};
+            if (_id) {
+                query._id = _id;
+            }
+            //根据 query 对象查询文章
+            collection.find(query).sort({
+                time: -1
+            }).toArray(function (err, docs) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err
+                }
+                callback(null, docs);//成功！以数组形式返回查询的结果
+            });
+        });
+    }
+};
+
 Item.get_ten_item = function(name, page, callback) {
         //打开数据库
+    if(!mongodb.openCalled) {
         mongodb.open(function (err, db) {
             if (err) {
                 return callback(err);
@@ -87,10 +142,10 @@ Item.get_ten_item = function(name, page, callback) {
                 collection.count(query, function (err, total) {
                     //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
                     collection.find(query, {
-                        skip: (page - 1)*10,
+                        skip: (page - 1) * 10,
                         limit: 10
                     }).sort({
-                        publish_time : -1
+                        publish_time: -1
                     }).toArray(function (err, docs) {
                         mongodb.close();
                         if (err) {
@@ -102,6 +157,36 @@ Item.get_ten_item = function(name, page, callback) {
                 });
             });
         });
+    }
+    else {
+        mongodb.collection('pos', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            var query = {};
+            if (name) {
+                query.name = name;
+            }
+            //使用 count 返回特定查询的文档数 total
+            collection.count(query, function (err, total) {
+                //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
+                collection.find(query, {
+                    skip: (page - 1) * 10,
+                    limit: 10
+                }).sort({
+                    publish_time: -1
+                }).toArray(function (err, docs) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    callback(null, docs, total);
+                });
+            });
+        });
+    }
 };
 
 Item.prototype.save = function(callback) {
@@ -139,7 +224,7 @@ Item.prototype.save = function(callback) {
     });
 };
 
-Item.remove_item = function(product_name, callback) {
+Item.remove_item = function(product_id, callback) {
     if(!mongodb.openCalled) {
         mongodb.open(function (err, db) {
             if (err) {
@@ -151,11 +236,9 @@ Item.remove_item = function(product_name, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                console.log("进入了删除函数！！！");
 
                 //根据 query 对象查询文章
-                collection.remove({name: product_name}, function (err) {
-                    console.log("执行了删除函数！！！");
+                collection.remove({_id: product_id}, function (err) {
                     mongodb.close();
                     if (err) {
                         return callback(err);//失败！返回 err
@@ -166,17 +249,15 @@ Item.remove_item = function(product_name, callback) {
         });
     }
     else {
-        //读取 posts 集合
+        //读取 pos 集合
         mongodb.collection('pos', function (err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);
             }
-            console.log("进入了删除函数！！！");
 
             //根据 query 对象查询文章
-            collection.remove({name: product_name}, function (err) {
-                console.log("执行了删除函数！！！");
+            collection.remove({_id: product_id}, function (err) {
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err
