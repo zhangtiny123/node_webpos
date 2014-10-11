@@ -282,7 +282,7 @@ Item.update_item = function(item, callback) {
                 }
 
                 var query = {};
-                query.name = item.name;
+                query._id = item._id;
 
                 //将文档插入 pos 集合
                 collection.update(query, item, function (err) {
@@ -303,7 +303,7 @@ Item.update_item = function(item, callback) {
             }
 
             var query = {};
-            query.name = item.name;
+            query._id = item._id;
 
             //将文档插入 pos 集合
             collection.update(query, item, function (err) {

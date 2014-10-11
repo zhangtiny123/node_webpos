@@ -315,17 +315,25 @@ module.exports = function(app){
     });
 
     app.post('/ad_products_detail',function(req,res){
-        var name = req.body.product_name;
+        var id = new ObjectID(req.body.id);
+        console.log(req.body);
+        var i = 0;
 
-
-        item.get_item(name, function(err, product_item) {
+        item.get_item_test(id, function(err, product_item) {
+            product_item[0].name = req.body.name;
             product_item[0].price = req.body.price;
             product_item[0].total_number = req.body.total_number;
             product_item[0].unit = req.body.unit;
 
+            _.each(req.body, function(element) {
+                if (i>=6) {
+                    product_item[0].extra_properties[i-6].property_value = element;
+                }
+                i++;
+            });
 
             var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number), product_item[0].extra_properties);
-            changed_item._id = new Object(product_item[0]._id);
+            changed_item._id = id;
             item.update_item(changed_item, function(err) {
                 if (err) {
                     return err;
@@ -333,8 +341,5 @@ module.exports = function(app){
                 res.redirect('/admin');
             })
         });
-
-
-
     })
 };

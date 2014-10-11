@@ -10,11 +10,11 @@
     <br/>
 
     <div>
-        <span class="hidden"><%= product_item._id%></span>
-        商品名称：<input id="p_name" type="text" name="product_name" readonly="true" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
-            商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
-            <input id="p_number" class="number_input" name="total_number" type="text" value="<%= product_item.total_number%>">
-            <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
+        <input class="hidden" type="hidden" name="id" value="<%= product_item._id%>">
+        商品名称：<input id="p_name" type="text" name="name" value="<%= product_item.name%>">&nbsp;&nbsp;&nbsp;
+        商品数量：<button type="button" class="btn btn-default add_minus_btn minus_product">-</button>
+                 <input id="p_number" class="number_input" name="total_number" type="text" value="<%= product_item.total_number%>">
+                 <button type="button" class="btn btn-default add_minus_btn add_product">+</button>
         <br/><br/>
         商品价格：<input id="p_price" name="price" type="text" value="<%= product_item.price%>">&nbsp;&nbsp;&nbsp;
         商品单位：<input id="p_unit" name="unit" type="text" value="<%= product_item.unit%>">
@@ -26,7 +26,7 @@
     其它属性（如果不要请删除，需要更正请重新添加）：
     <br/><br/>
     <% product_item.extra_properties.forEach(function(attr, index){%>
-    <%= attr.name%>:<input name="<%= attr.name%>" type="text" readonly="true" value="<%= attr.property_value%>">
+    <%= attr.name%>:<input name="<%= attr.name%>" type="text" value="<%= attr.property_value%>">
     <% if(index%2 == 1) {%>
     <br/><br/>
     <% }%>

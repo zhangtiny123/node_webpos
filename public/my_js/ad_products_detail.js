@@ -2,6 +2,8 @@
  * Created by tiny on 14-10-8.
  */
 
+console.log($(".hidden").val());
+
 $(".minus_product").on("click", function() {
     var p_number = $("#p_number");
     if(p_number.val() == "0"){

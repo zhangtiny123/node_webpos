@@ -26,7 +26,7 @@ $("#save_btn").on("click", function() {
                 window.location.href="ad_add_products";
             }
             else {
-                window.location.href="ad_products_detail?product_name="+path_value+"";
+                window.location.href="ad_products_detail?id="+id+"";
             }
         })
     }
