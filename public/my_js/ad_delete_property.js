@@ -5,7 +5,7 @@
 
 var middle_path = $("#middle_path");
 var path_value = middle_path.text();
-var id = $(".hidden").text();
+var id = $("#product_id").text();
 if(path_value == "添加商品") {
     middle_path.attr('href','/ad_add_products')
 }
@@ -15,10 +15,10 @@ else {
 
 $(".delete_property").on("click", function() {
     var THIS = this;
-    var id = $(this).closest(".property_item").find(".hidden").text();
+    var property_id = $(this).closest(".property_item").find(".hidden").text();
     var property_name = $(this).closest(".property_item").find(".property_name").text();
     if(confirm("确认删除"+property_name+"吗？")){
-        $.post('/delete_property', {id : id, property_name : property_name, path_value :path_value}, function(data) {
+        $.post('/delete_property', {property_id : property_id, product_id : id}, function(data) {
             $(THIS).closest(".property_item").remove();
         })
     }

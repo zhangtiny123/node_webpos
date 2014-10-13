@@ -159,7 +159,7 @@ Product_property.clear_properties = function(callback) {
     }
 };
 
-Product_property.remove_property = function(property_name, callback) {
+Product_property.remove_property = function(_id, callback) {
     if(!mongodb.openCalled) {
         mongodb.open(function (err, db) {
             if (err) {
@@ -173,7 +173,7 @@ Product_property.remove_property = function(property_name, callback) {
                 }
 
 
-                collection.remove({name: property_name}, function (err) {
+                collection.remove({_id: _id}, function (err) {
                     mongodb.close();
                     if (err) {
                         return callback(err);//失败！返回 err
@@ -192,7 +192,7 @@ Product_property.remove_property = function(property_name, callback) {
             }
 
             //根据 query 对象查询文章
-            collection.remove({name: property_name}, function (err) {
+            collection.remove({_id: _id}, function (err) {
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err

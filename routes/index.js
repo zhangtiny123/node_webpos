@@ -277,13 +277,13 @@ module.exports = function(app){
     });
 
     app.post('/delete_property', function(req, res) {
-        var id = req.body.id;
-        console.log("the past id is:"+id);
-        var property_name = req.body.property_name;
-        var product_name = req.body.path_value;
+        var product_id = req.body.product_id;
+        var property_id = new ObjectID(req.body.property_id);
 
-        if(product_name == "添加商品") {
-            Property.remove_property(property_name, function(err) {
+        console.log(typeof product_id);
+
+        if(product_id == "0") {
+            Property.remove_property(property_id, function(err) {
                 if (err) {
                     return err;
                 }
@@ -291,12 +291,13 @@ module.exports = function(app){
             })
         }
         else {
-            item.get_item(product_name, function(err, the_item) {
+            var the_product_id = new ObjectID(req.body.product_id);
+            item.get_item_test(the_product_id, function(err, the_item) {
                 var extra_properties = the_item[0].extra_properties;
                 var i = 0;
                 var delete_index = null;
                 _.each(extra_properties, function(property) {
-                    if (property.name == property_name) {
+                    if (property._id == the_product_id) {
                         delete_index = i;
                     }
                     i += 1;
