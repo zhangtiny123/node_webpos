@@ -140,7 +140,7 @@ module.exports = function(app){
             if (err) {
                 return err;
             }
-            res.json({data:"success"});
+            res.json({message:"success"});
 
         })
     });
@@ -195,14 +195,14 @@ module.exports = function(app){
                 }
                 var product_name = item[0].name;
                 res.render('ad_add_property', {
-                    product_id : product_id,
+                    product_id : id,
                     middle_path : product_name
                 })
             });
         }
         else {
             res.render('ad_add_property', {
-                product_id : 0,
+                product_id : undefined,
                 middle_path : "添加商品"
             })
         }
@@ -225,6 +225,7 @@ module.exports = function(app){
         }
         else{
             var property1 = new Property(property_name, property_value);
+            property1._id = new ObjectID();
             item.get_item_test(product_id, function(err, product_item) {
                 var extra_attrs = product_item[0].extra_properties;
                 extra_attrs.push(property1);
@@ -258,7 +259,7 @@ module.exports = function(app){
         else {
             Property.get_properties(null, function(err, properties){
                 res.render('ad_delete_property', {
-                    product_id : 0,
+                    product_id : undefined,
                     middle_path : "添加商品",
                     properties : properties
                 })
@@ -271,7 +272,6 @@ module.exports = function(app){
     app.post('/delete_property', function(req, res) {
         var product_id = req.body.product_id;
         var property_id = new ObjectID(req.body.property_id);
-
         if(product_id == "0") {
             Property.remove_property(property_id, function(err) {
                 if (err) {
