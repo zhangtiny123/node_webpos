@@ -5,8 +5,6 @@
 var middle_path = $("#middle_path");
 var path_value = middle_path.text();
 var id = $("#p_id").val();
-console.log(id);
-console.log(path_value);
 if(path_value == "添加商品") {
     middle_path.attr('href','/ad_add_products');
     $("#cancel").attr('href','/ad_add_products');
@@ -37,7 +35,13 @@ $("#save_btn").on("click", function() {
             window.location.href="/ad_add_property?id="+id+"";
         }
     }
+    console.log(check_value());
+    if(check_value()) {
+        console.log("check success!");
+    }
 });
+
+
 
 var check_null = function () {
     var check_flag = true;
@@ -52,6 +56,25 @@ var check_null = function () {
     else {
         $("#save_btn").attr("disabled", true)
     }
-}
+};
+
+
+$("#attr_name").bind("blur", function () {
+    var property_name = $(this).val();
+    if (property_name.match("日期") != null) {
+        $("#tips").text("example:09/13/2014");
+    }
+    else if (property_name.match("电话") || property_name.match("电话号码") || property_name.match("tel")
+        || property_name.match("telephone") || property_name.match("phone")) {
+        $("#tips").text('example:"0311-7411305"或者为"800-810-1972"');
+    }
+    else if (property_name.match("编码")) {
+        $("#tips").text('example:04108 090 0126');
+    }
+});
+
+
+
+
 
 
