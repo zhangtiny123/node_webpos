@@ -170,7 +170,9 @@ module.exports = function(app){
             if (err) {
                 properties=[];
             }
+            console.log(properties);
             var product_item = new item(type, name, unit, price, publish_time, total_number, properties);
+            console.log(product_item.extra_properties);
             product_item.save(function(err) {
                 if (err) {
                     console.log(err);
@@ -275,6 +277,8 @@ module.exports = function(app){
     });
 
     app.post('/delete_property', function(req, res) {
+        var id = req.body.id;
+        console.log("the past id is:"+id);
         var property_name = req.body.property_name;
         var product_name = req.body.path_value;
 

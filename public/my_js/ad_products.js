@@ -6,7 +6,7 @@ $(".deleteProduce").on("click", function() {
     var THIS = this;
     var product_name = $(this).closest(".product_item").find(".product_name").text();
     var product_id = $(this).closest(".product_item").find(".hidden").text();
-    console.log(typeof product_id);
+    console.log(typeof location.search);
     if(confirm("确认删除"+product_name+"吗？")){
         $.post('/delete_item_response', {product_id : product_id}, function(data) {
             var tr_node = $(THIS).closest(".product_item");
@@ -16,7 +16,8 @@ $(".deleteProduce").on("click", function() {
                 tr_node = tr_node.next();
             }
             $(THIS).closest(".product_item").remove();
-            window.location.href="/admin";
+
+            window.location.href="/admin"+location.search;
         })
     }
 });

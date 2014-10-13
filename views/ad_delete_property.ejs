@@ -15,6 +15,7 @@
     <tbody>
     <% properties.forEach(function(property, index) {%>
     <tr class="property_item">
+        <td class="hidden"><%= property._id%></td>
         <td class="property_name"><%= property.name%></td>
         <td><%= property.property_value%></td>
         <td><a href="#" class="a_style delete_property">删除</a></td>

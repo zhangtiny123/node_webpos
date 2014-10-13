@@ -15,9 +15,10 @@ else {
 
 $(".delete_property").on("click", function() {
     var THIS = this;
+    var id = $(this).closest(".property_item").find(".hidden").text();
     var property_name = $(this).closest(".property_item").find(".property_name").text();
     if(confirm("确认删除"+property_name+"吗？")){
-        $.post('/delete_property', {property_name : property_name, path_value :path_value}, function(data) {
+        $.post('/delete_property', {id : id, property_name : property_name, path_value :path_value}, function(data) {
             $(THIS).closest(".property_item").remove();
         })
     }
