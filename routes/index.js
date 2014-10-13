@@ -119,14 +119,14 @@ module.exports = function(app){
 
     app.post('/direct_change_number', function(req, res) {
         var add_number = req.body.add_number;
-        var product_name = req.body.product_name;
-        item.get_item(product_name, function(err, product_item) {
+        var product_id = new ObjectID(req.body.product_id);
+        item.get_item_test(product_id, function(err, product_item) {
             if (err) {
                 return err;
             }
             add_number = parseInt(add_number);
             var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number)+add_number, product_item[0].extra_properties);
-            changed_item._id = new Object(product_item[0]._id);
+            changed_item._id = product_id;
             item.update_item(changed_item, function(err) {
                 if (err) {
                     return err;
@@ -140,7 +140,7 @@ module.exports = function(app){
         var product_id = new ObjectID(req.body.product_id);
         item.remove_item(product_id, function(err) {
             if (err) {
-                return callback(err);
+                return err;
             }
             res.json({data:"success"});
 
@@ -232,7 +232,7 @@ module.exports = function(app){
         }
         else{
             var property1 = new Property(property_name, property_value);
-            item.get_item(product_name, function(err, product_item) {
+            item.get_item_test(product_id, function(err, product_item) {
                 var extra_attrs = product_item[0].extra_properties;
                 extra_attrs.push(property1);
                 var changed_item = new item(product_item[0].type, product_item[0].name, product_item[0].unit, product_item[0].price, product_item[0].publish_time, parseInt(product_item[0].total_number), extra_attrs);

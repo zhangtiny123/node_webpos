@@ -23,16 +23,16 @@ $(".deleteProduce").on("click", function() {
 
 $(".minus_product").on("click", function() {
     var p_number = $(this).closest(".product_item").find(".p_number");
-    var item_name = $(this).closest(".product_item").find(".product_name").text();
-    $.post('/direct_change_number', {add_number:-1, product_name: item_name}, function(data) {
+    var p_id = $(this).closest(".product_item").find(".hidden").text();
+    $.post('/direct_change_number', {add_number:-1, product_id: p_id}, function(data) {
         p_number.val(parseInt(p_number.val())-1);
     })
 });
 
 $(".add_product").on("click", function() {
     var p_number = $(this).closest(".product_item").find(".p_number");
-    var item_name = $(this).closest(".product_item").find(".product_name").text();
-    $.post('/direct_change_number', {add_number:1, product_name: item_name}, function(data) {
+    var p_id = $(this).closest(".product_item").find(".hidden").text();
+    $.post('/direct_change_number', {add_number:1, product_id: p_id}, function(data) {
         p_number.val(parseInt(p_number.val())+1);
     })
 });
