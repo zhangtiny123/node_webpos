@@ -1,8 +1,6 @@
 /**
  * Created by tiny on 14-10-6.
  */
-
-
 var middle_path = $("#middle_path");
 var path_value = middle_path.text();
 var id = $("#product_id").text();

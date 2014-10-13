@@ -202,12 +202,3 @@ Product_property.remove_property = function(_id, callback) {
         });
     }
 };
-
-//var c = {name : "商品类型" , property_value:"" , isFixed:true};
-//var i = {name : "商品名称" , property_value: "" , isFixed: true};
-//var j = {name : "商品数量" , property_value: "" , isFixed: true};
-//var k = {name : "单价（元）" , property_value : "" , isFixed : true};
-//var m = {name : "单位" , property_value: "" , isFixed:true};
-//var l = {name : "发布时间" , property_value:"" , isFixed: false};
-//var b = {name : "barcode" , property_value:"" , isFixed:true};
-//var jj = {_id : ObjectId("5423c2621ed1808344cc453e") , name : "发布时间",  property_value : "" , isFixed : true}

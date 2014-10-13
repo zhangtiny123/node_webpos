@@ -15,7 +15,6 @@ $(".deleteProduce").on("click", function() {
                 tr_node = tr_node.next();
             }
             $(THIS).closest(".product_item").remove();
-
             window.location.href="/admin"+location.search;
         })
     }

@@ -63,7 +63,6 @@ module.exports = function(app){
                 count_of_cart : count
             });
         });
-
     });
 
     app.get('/pay_page', function(req, res) {
@@ -91,7 +90,6 @@ module.exports = function(app){
                 if (err){
                     products = [];
                 }
-
                 Counting.get_cart_counting(function(count) {
                     res.render('product_list',{
                         product_list : products,
@@ -170,9 +168,7 @@ module.exports = function(app){
             if (err) {
                 properties=[];
             }
-            console.log(properties);
             var product_item = new item(type, name, unit, price, publish_time, total_number, properties);
-            console.log(product_item.extra_properties);
             product_item.save(function(err) {
                 if (err) {
                     console.log(err);
@@ -181,7 +177,6 @@ module.exports = function(app){
                     if(err) {
                         return err;
                     }
-                    console.log("执行完了清除函数");
                     res.json({message : "save success!"});
                 });
 
@@ -192,7 +187,6 @@ module.exports = function(app){
 
     app.get('/ad_add_property', function(req, res) {
         var id = req.query.id;
-        console.log("这里的id是："+id);
         if (id != undefined) {
             var product_id = new ObjectID(id);
             item.get_item_test(product_id, function(err, item) {
@@ -220,7 +214,6 @@ module.exports = function(app){
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;
 
-        console.log("product_id:"+req.body.product_id);
         if(p_id == undefined){
             var property = new Property(property_name, property_value);
             property.save(function(err) {
@@ -264,7 +257,6 @@ module.exports = function(app){
         }
         else {
             Property.get_properties(null, function(err, properties){
-                console.log("properties:"+properties);
                 res.render('ad_delete_property', {
                     product_id : 0,
                     middle_path : "添加商品",
@@ -279,8 +271,6 @@ module.exports = function(app){
     app.post('/delete_property', function(req, res) {
         var product_id = req.body.product_id;
         var property_id = new ObjectID(req.body.property_id);
-
-        console.log(typeof product_id);
 
         if(product_id == "0") {
             Property.remove_property(property_id, function(err) {
@@ -326,7 +316,6 @@ module.exports = function(app){
 
     app.post('/ad_products_detail',function(req,res){
         var id = new ObjectID(req.body.id);
-        console.log(req.body);
         var i = 0;
 
         item.get_item_test(id, function(err, product_item) {

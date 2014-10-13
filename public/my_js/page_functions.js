@@ -1,7 +1,6 @@
 /**
  * Created by tiny on 14-9-16.
  */
-
 $(".addGood").on("click", function() {
     var THIS =this;
     var name = $(this).closest("#item_body").find("#product_name").text();
@@ -30,7 +29,6 @@ $(".minusGood").on("click", function() {
 
     })
 });
-
 
 function add_to_cart(name) {
     $.post('/add_to_cart',{product_name : name, type:"add"}, function(data) {

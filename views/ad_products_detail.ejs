@@ -23,8 +23,6 @@
     </div>
 
     <br/><br/>
-    其它属性（如果不要请删除，需要更正请重新添加）：
-    <br/><br/>
     <% product_item.extra_properties.forEach(function(attr, index){%>
     <%= attr.name%>:<input name="<%= attr.name%>" type="text" value="<%= attr.property_value%>">
     <% if(index%2 == 1) {%>
