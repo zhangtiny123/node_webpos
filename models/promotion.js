@@ -67,3 +67,4 @@ Promotion.save = function(callback) {
         });
     });
 };
+

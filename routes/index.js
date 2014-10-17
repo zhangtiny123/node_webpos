@@ -179,7 +179,6 @@ module.exports = function(app){
                     }
                     res.json({message : "save success!"});
                 });
-
             })
         });
 
@@ -202,7 +201,7 @@ module.exports = function(app){
         }
         else {
             res.render('ad_add_property', {
-                product_id : undefined,
+                product_id : "undefined",
                 middle_path : "添加商品"
             })
         }
@@ -210,7 +209,7 @@ module.exports = function(app){
 
     app.post('/ad_add_property', function(req, res) {
         var p_id = req.body.product_id;
-        var product_id = new ObjectID(p_id);
+
         var property_name = req.body.property_name;
         var property_value = req.body.property_value;
 
@@ -224,6 +223,7 @@ module.exports = function(app){
             })
         }
         else{
+            var product_id = new ObjectID(p_id);
             var property1 = new Property(property_name, property_value);
             property1._id = new ObjectID();
             item.get_item_test(product_id, function(err, product_item) {
@@ -272,7 +272,7 @@ module.exports = function(app){
     app.post('/delete_property', function(req, res) {
         var product_id = req.body.product_id;
         var property_id = new ObjectID(req.body.property_id);
-        if(product_id == "0") {
+        if(product_id == "undefined") {
             Property.remove_property(property_id, function(err) {
                 if (err) {
                     return err;
@@ -315,6 +315,7 @@ module.exports = function(app){
     });
 
     app.post('/ad_products_detail',function(req,res){
+        console.log(req.body);
         var id = new ObjectID(req.body.id);
         var i = 0;
 

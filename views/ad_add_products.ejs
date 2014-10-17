@@ -23,10 +23,10 @@
     </div>
     <br/><br/>
     <% extra_attributes.forEach(function(attr, index){%>
-        <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
-        <% if(index%2 == 1) {%>
-        <br/><br/>
-        <% }%>
+    <%= attr.name%>:<input name="" type="text" value="<%= attr.property_value%>">
+    <% if(index%2 == 1) {%>
+    <br/><br/>
+    <% }%>
     <% })%>
 </form>
 

@@ -13,12 +13,10 @@ module.exports = Processor;
 
 Processor.process_add_item = function(input_name ,add_num, callback) {
     var counting;
-    console.log("得到的商品名称："+input_name);
     Counting.get_cart_info(input_name, function(err, cart_item) {
         if(err) {
             console.log(err);
         }
-        console.log("0.0："+cart_item.length);
 
         //数据库中存在相同的商品
         if (cart_item.length != 0){
@@ -26,7 +24,6 @@ Processor.process_add_item = function(input_name ,add_num, callback) {
             counting.count = cart_item[0].count;
             counting._id = new Object(cart_item[0]._id);
             counting.count_plus(add_num);
-            console.log("我要找的："+counting.count);
             counting.calculate_total_price(function(calculated_counting){
                 calculated_counting.update_item(calculated_counting, function(err) {
                     if (err) {
