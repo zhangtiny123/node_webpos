@@ -8,78 +8,207 @@ function Cart_items () {
 Cart_items.load_cart_items = function () {
     return [
         {
-            type : "水果",
-            name : "苹果",
-            price : 3.00,
-            unit : "斤",
-            count : 4,
-            publish_time : "09/18/2014",
-            extra_information : []
+            properties : [
+                {
+                    property_name : "type",
+                    property_value : "水果",
+                    isFixed : true
+                },
+                {
+                    property_name : "name",
+                    property_value : "苹果",
+                    isFixed : true
+                },
+                {
+                    property_name : "price",
+                    property_value : "3.00",
+                    isFixed : true
+                },
+                {
+                    property_name : "unit",
+                    property_value : "斤",
+                    isFixed : true
+                },
+                {
+                    property_name : "count",
+                    property_value : "4",
+                    isFixed : true
+                },
+                {
+                    property_name : "publish_time",
+                    property_value : "2014/09/18",
+                    isFixed : true
+                }
+            ]
         },
         {
-            type : "水果",
-            name : "橘子",
-            price : 5.00,
-            unit : "斤",
-            count : 10,
-            publish_time : "05/15/2014",
-            extra_information : []
+            properties : [
+                {
+                    property_name : "type",
+                    property_value : "水果",
+                    isFixed : true
+                },
+                {
+                    property_name : "name",
+                    property_value : "橘子",
+                    isFixed : true
+                },
+                {
+                    property_name : "price",
+                    property_value : "5.00",
+                    isFixed : true
+                },
+                {
+                    property_name : "unit",
+                    property_value : "斤",
+                    isFixed : true
+                },
+                {
+                    property_name : "count",
+                    property_value : "10",
+                    isFixed : true
+                },
+                {
+                    property_name : "publish_time",
+                    property_value : "2014/05/15",
+                    isFixed : true
+                }
+            ]
         },
         {
-            type : "电子产品",
-            name : "iphone6",
-            price : 6000,
-            unit : "部",
-            count : 2,
-            publish_time : "10/03/2014",
-            extra_information : [
+            properties : [
+                {
+                    property_name : "type",
+                    property_value : "电子产品",
+                    isFixed : true
+                },
+                {
+                    property_name : "name",
+                    property_value : "iphone6",
+                    isFixed : true
+                },
+                {
+                    property_name : "price",
+                    property_value : "6000",
+                    isFixed : true
+                },
+                {
+                    property_name : "unit",
+                    property_value : "部",
+                    isFixed : true
+                },
+                {
+                    property_name : "count",
+                    property_value : "2",
+                    isFixed : true
+                },
+                {
+                    property_name : "publish_time",
+                    property_value : "2014/10/03",
+                    isFixed : true
+                },
                 {
                     property_name : "color",
-                    property_value : "space gray"
+                    property_value : "space gray",
+                    isFixed : false
                 },
                 {
                     property_name : "weight",
-                    property_value : "300g"
+                    property_value : "300g",
+                    isFixed : false
                 }
             ]
         },
         {
-            type : "电子产品",
-            name : "iMac",
-            price : 20000,
-            unit : "台",
-            count : 3,
-            publish_time : "10/17/2014",
-            extra_information : [
+            properties : [
+                {
+                    property_name : "type",
+                    property_value : "电子产品",
+                    isFixed : true
+                },
+                {
+                    property_name : "name",
+                    property_value : "iMac",
+                    isFixed : true
+                },
+                {
+                    property_name : "price",
+                    property_value : "20000",
+                    isFixed : true
+                },
+                {
+                    property_name : "unit",
+                    property_value : "台",
+                    isFixed : true
+                },
+                {
+                    property_name : "count",
+                    property_value : "3",
+                    isFixed : true
+                },
+                {
+                    property_name : "publish_time",
+                    property_value : "2014/10/17",
+                    isFixed : true
+                },
                 {
                     property_name : "color",
-                    property_value : "space gray"
+                    property_value : "space gray",
+                    isFixed : false
                 },
                 {
                     property_name : "size",
-                    property_value : "29inch"
+                    property_value : "29inch",
+                    isFixed : false
                 },
                 {
                     property_name : "tel",
-                    property_value : "0839-6767899"
+                    property_value : "0839-6767899",
+                    isFixed : false
                 }
             ]
         },
         {
-            type : "零食",
-            name : "可比克",
-            price : 10.00,
-            unit : "盒",
-            count : 8,
-            publish_time : "10/11/2014",
-            extra_information : [
+            properties : [
+                {
+                    property_name : "type",
+                    property_value : "零食",
+                    isFixed : true
+                },
+                {
+                    property_name : "name",
+                    property_value : "可比克",
+                    isFixed : true
+                },
+                {
+                    property_name : "price",
+                    property_value : "10.00",
+                    isFixed : true
+                },
+                {
+                    property_name : "unit",
+                    property_value : "盒",
+                    isFixed : true
+                },
+                {
+                    property_name : "count",
+                    property_value : "8",
+                    isFixed : true
+                },
+                {
+                    property_name : "publish_time",
+                    property_value : "2014/10/11",
+                    isFixed : true
+                },
                 {
                     property_name : "保质期",
-                    property_value : "2年"
+                    property_value : "2年",
+                    isFixed : false
                 },
                 {
                     property_name : "产地",
-                    property_value : "LA"
+                    property_value : "LA",
+                    isFixed : false
                 }
             ]
         }

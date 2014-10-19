@@ -6,5 +6,5 @@ function Promotion_rule() {
 }
 
 Promotion_rule.get_rule = function() {
-    return "(name == '苹果' || name == 'iMac') && publish_time < '08/01/2014'";
+    return "(name == '苹果' || name == 'iMac') && publish_time < '2014/10/20'";
 };
