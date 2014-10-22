@@ -41,6 +41,40 @@ Cart_items.load_cart_items = function () {
                 }
             ]
         },
+//        {
+//            properties : [
+//                {
+//                    property_name : "type",
+//                    property_value : "水果",
+//                    isFixed : true
+//                },
+//                {
+//                    property_name : "name",
+//                    property_value : "苹果",
+//                    isFixed : true
+//                },
+//                {
+//                    property_name : "price",
+//                    property_value : "3.00",
+//                    isFixed : true
+//                },
+//                {
+//                    property_name : "unit",
+//                    property_value : "斤",
+//                    isFixed : true
+//                },
+//                {
+//                    property_name : "count",
+//                    property_value : "4",
+//                    isFixed : true
+//                },
+//                {
+//                    property_name : "publish_time",
+//                    property_value : "2014/04/18",
+//                    isFixed : true
+//                }
+//            ]
+//        },
         {
             properties : [
                 {
