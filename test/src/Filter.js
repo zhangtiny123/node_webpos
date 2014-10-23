@@ -1,70 +1,13 @@
 /**
+ * 利用了堆栈的数据结构，并且将过滤规则看成是中缀表达式
+ * @param rule
+ * @param item_list
+ * @returns {*}
  * Created by tiny on 14-10-17.
  */
 
-function filter_the_items(rule, item_list) {
-
-    rule = remove_no_use_symbols(rule);
-    console.log(rule);
-    if(rule.indexOf("&") == -1) {
-        this_rule = rule;
-        left_rule = "";
-    }
-    else {
-        var this_rule = rule.slice(0,rule.indexOf("&"));
-        var left_rule = rule.slice(rule.indexOf("&") + 1);
-    }
-    this_rule = this_rule.replace(/[\(\)]/g,"");
-    var processed_item_list = [];
-    var temp = this_rule.split("|");
-    for (var j=0; j<temp.length; j++) {
-        (function () {
-            temp[j] = temp[j].replace(/[\']/g,"");
-            if(temp[j].indexOf("=") != -1) {
-                _.each(item_list, function(item) {
-                    _.each(item.properties, function(property) {
-                        if(property.property_name == temp[j].split("=")[0] && property.property_value == temp[j].split("=")[1]) {
-                            processed_item_list.push(item);
-                        }
-                    })
-                })
-            }
-            else if(temp[j].indexOf("<") != -1) {
-                _.each(item_list, function(item) {
-                    _.each(item.properties, function(property) {
-                        if(property.property_name == temp[j].split("<")[0] && property.property_value < temp[j].split("<")[1]) {
-                            processed_item_list.push(item);
-                        }
-                    })
-                })
-            }
-            else if(temp[j].indexOf(">") != -1) {
-                _.each(item_list, function(item) {
-                    _.each(item.properties, function(property) {
-                        if(property.property_name == temp[j].split(">")[0] && property.property_value > temp[j].split(">")[1]) {
-                            processed_item_list.push(item);
-                        }
-                    })
-                })
-            }
-        })(j);
-    }
-    console.log(processed_item_list);
-    return left_rule == "" ? processed_item_list :  filter_the_items(left_rule, processed_item_list);
-}
-
-
-
-function remove_no_use_symbols(rule_string) {
-    rule_string = rule_string.replace(/['\s+]/g,"");
-    rule_string = rule_string.replace(/[&]{2}/g,"&");
-    rule_string = rule_string.replace(/[=]{2}/g,"=");
-    return rule_string.replace(/[|]{2}/g,"|");
-}
-
 function stack_filter(rule, item_list) {
     rule = remove_no_use_symbols(rule);
-    console.log(rule);
 
     var symbol_stack = [];
     var search_result_stack = [];
@@ -76,51 +19,48 @@ function stack_filter(rule, item_list) {
     rule = rule.split("");
 
     while(rule.length != 0 ) {
-        console.log(rule);
         var char = rule.shift();
-        console.log(search_unit.key);
         if (char.match(/[\(\)&|]/)) {
             if(search_unit.key != "") {
                 search_result_stack.push(search_items(search_unit, item_list));
-
                 search_unit = {
                     key : "",
                     value : "",
                     symbol : ""
                 };
             }
-            console.log("comes here");
-            console.log(search_result_stack[0]);
-//            if(get_in_coming_priority(char) > get_in_stack_priority(get_top(symbol_stack))) {
-//                symbol_stack.push(char);
-//            }
-//            else if(get_in_coming_priority(char) == get_in_stack_priority(get_top(symbol_stack))) {
-//                symbol_stack.pop();
-//            }
-//            while(get_in_coming_priority(char) < get_in_stack_priority(get_top(symbol_stack))) {
-//                var current_compute_symbol = symbol_stack.pop();
-//                if (current_compute_symbol == "&") {
-//                    search_result_stack.push(and_compute(search_result_stack.pop() , search_result_stack.pop()));
-//                }
-//                else if (current_compute_symbol == "|") {
-//                    search_result_stack.push(or_compute(search_result_stack.pop() , search_result_stack.pop()));
-//                }
-//                symbol_stack.push(char);
-//            }
+            while(get_in_coming_priority(char) < get_in_stack_priority(get_top(symbol_stack))) {
+                var current_compute_symbol = symbol_stack.pop();
+                if (current_compute_symbol == "&") {
+                    search_result_stack.push(and_compute(search_result_stack.pop() , search_result_stack.pop()));
+                }
+                else if (current_compute_symbol == "|") {
+                    search_result_stack.push(or_compute(search_result_stack.pop() , search_result_stack.pop()));
+                }
+                if(char != ")") {
+                    symbol_stack.push(char);
+                }
+            }
+            if(get_in_coming_priority(char) > get_in_stack_priority(get_top(symbol_stack))) {
+                symbol_stack.push(char);
+            }
+            else if(get_in_coming_priority(char) == get_in_stack_priority(get_top(symbol_stack))) {
+                symbol_stack.pop();
+            }
         }
         else {
             if(!char.match(/[=<>]/) && search_unit.symbol == ""){
-                search_unit.key.concat(char);
+                search_unit.key = search_unit.key.concat(char);
             }
             else if(!char.match(/[=<>]/) && search_unit.symbol != "") {
-                search_unit.value.concat(char);
+                search_unit.value = search_unit.value.concat(char);
             }
             else if(char.match(/[=<>]/)) {
-                search_unit.symbol.concat(char);
+                search_unit.symbol = search_unit.symbol.concat(char);
             }
         }
     }
-    while(symbol_stack.length != 0) {
+    while(symbol_stack.length != 0 || search_unit.key != "") {
         if (search_unit.key != "") {
             search_result_stack.push(search_items(search_unit, item_list));
             search_unit = {
@@ -138,6 +78,13 @@ function stack_filter(rule, item_list) {
         }
     }
     return search_result_stack[0];
+}
+
+function remove_no_use_symbols(rule_string) {
+    rule_string = rule_string.replace(/['\s+]/g,"");
+    rule_string = rule_string.replace(/[&]{2}/g,"&");
+    rule_string = rule_string.replace(/[=]{2}/g,"=");
+    return rule_string.replace(/[|]{2}/g,"|");
 }
 
 function get_in_coming_priority(symbol) {
@@ -184,7 +131,7 @@ function search_items(search_unit ,item_list) {
             if(search_unit.symbol == "=" && property.property_name == search_unit.key && property.property_value == search_unit.value) {
                 find_list.push(item);
             }
-            else if(search_unit.symbol == ">" && property.property_name == search_unit.key && property.property_value > search_unit.value) {
+            else if(search_unit.symbol == "<" && property.property_name == search_unit.key && property.property_value < search_unit.value) {
                 find_list.push(item);
             }
             else if(search_unit.symbol == ">" && property.property_name == search_unit.key && property.property_value > search_unit.value) {
@@ -192,7 +139,6 @@ function search_items(search_unit ,item_list) {
             }
         })
     });
-    console.log(find_list);
     return find_list;
 }
 
@@ -209,9 +155,23 @@ function and_compute(list1, list2) {
 }
 
 function or_compute(list1, list2) {
-    var computed_list = [];
-    computed_list.concat(list1, list2);
-    return computed_list;
+    var temp_list = [];
+    temp_list = list1;
+    for(var i=0; i<list2.length; i++) {
+        if(!is_product_in_list(list1, list2[i])) {
+            temp_list.push(list2[i]);
+        }
+    }
+    return temp_list;
+}
+
+function is_product_in_list(list, product) {
+    for(var i=0; i<list.length; i++) {
+        if(product_equals(list[i], product)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function product_equals(product1, product2) {
@@ -228,6 +188,60 @@ function product_equals(product1, product2) {
         }
     }
     return true;
+}
+
+
+
+/**
+ * 最初实现的不全面的方法
+ */
+function filter_the_items(rule, item_list) {
+
+    rule = remove_no_use_symbols(rule);
+    if(rule.indexOf("&") == -1) {
+        this_rule = rule;
+        left_rule = "";
+    }
+    else {
+        var this_rule = rule.slice(0,rule.indexOf("&"));
+        var left_rule = rule.slice(rule.indexOf("&") + 1);
+    }
+    this_rule = this_rule.replace(/[\(\)]/g,"");
+    var processed_item_list = [];
+    var temp = this_rule.split("|");
+    for (var j=0; j<temp.length; j++) {
+        (function () {
+            temp[j] = temp[j].replace(/[\']/g,"");
+            if(temp[j].indexOf("=") != -1) {
+                _.each(item_list, function(item) {
+                    _.each(item.properties, function(property) {
+                        if(property.property_name == temp[j].split("=")[0] && property.property_value == temp[j].split("=")[1]) {
+                            processed_item_list.push(item);
+                        }
+                    })
+                })
+            }
+            else if(temp[j].indexOf("<") != -1) {
+                _.each(item_list, function(item) {
+                    _.each(item.properties, function(property) {
+                        if(property.property_name == temp[j].split("<")[0] && property.property_value < temp[j].split("<")[1]) {
+                            processed_item_list.push(item);
+                        }
+                    })
+                })
+            }
+            else if(temp[j].indexOf(">") != -1) {
+                _.each(item_list, function(item) {
+                    _.each(item.properties, function(property) {
+                        if(property.property_name == temp[j].split(">")[0] && property.property_value > temp[j].split(">")[1]) {
+                            processed_item_list.push(item);
+                        }
+                    })
+                })
+            }
+        })(j);
+    }
+    return left_rule == "" ? processed_item_list :  filter_the_items(left_rule, processed_item_list);
 }
 
 
