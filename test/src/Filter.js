@@ -126,6 +126,9 @@ function get_top(stack_list) {
 
 function search_items(search_unit ,item_list) {
     var find_list = [];
+    if(search_unit.value.match(/[\d]{n}/)) {
+        search_unit.value = parseInt(search_unit.value);
+    }
     _.each(item_list, function(item) {
         _.each(item.properties, function(property) {
             if(search_unit.symbol == "=" && property.property_name == search_unit.key && property.property_value == search_unit.value) {

@@ -125,7 +125,7 @@ describe("cart_items filter test", function() {
     });
 
     it("should filter out the products whose count > 9", function() {
-        var rule = "count > 009";
+        var rule = "count > 9";
         var item_list = Cart_items.load_cart_items();
         expect(stack_filter(rule, item_list).length).toBe(3);
     })
